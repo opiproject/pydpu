@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2022 Dell Inc, or its subsidiaries.
 .PHONY: clean clean-build clean-pyc clean-test help lint build docker format test
 .DEFAULT_GOAL := help
 SHELL=/bin/bash
