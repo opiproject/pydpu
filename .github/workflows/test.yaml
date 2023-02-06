@@ -38,6 +38,9 @@ jobs:
 
     - run: poetry install --no-interaction --with=dev,test
 
+    - name: Lint code
+      run: make lint
+
     - name: Test with pytest
       run: poetry run pytest --cov-report=xml
 
