@@ -15,3 +15,16 @@ Python library and cli to communicate with DPUs and IPUs
 This project welcomes contributions and suggestions.  We are happy to have the Community involved via submission of **Issues and Pull Requests** (with substantive content or even just fixes). We are hoping for the documents, test framework, etc. to become a community process with active engagement.  PRs can be reviewed by by any number of people, and a maintainer may accept.
 
 See [CONTRIBUTING](https://github.com/opiproject/opi/blob/main/CONTRIBUTING.md) and [GitHub Basic Process](https://github.com/opiproject/opi/blob/main/doc-github-rules.md) for more details.
+
+## Releasing new versions
+
+```sh
+# Make sure you have dev dependencies installed
+$ poetry install --group dev
+# Use bump2version to update version strings and create a new tag
+$ bump2version <patch|minor|major>
+# Push new tag
+$ git push --tags
+# Create GitHub release
+$ gh release create v$(poetry version) --generate-notes
+```
