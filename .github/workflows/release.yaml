@@ -35,5 +35,5 @@ jobs:
       run: poetry publish
 
   release-docker:
-    uses: ./.github/workflows/docker-publish.yml
+    uses: ./.github/workflows/docker.yaml
     secrets: inherit
