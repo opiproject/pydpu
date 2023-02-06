@@ -6,8 +6,12 @@ authors = ["OPI Dev <opi-dev@lists.opiproject.org>"]
 license = "Apache-2.0"
 readme = "README.md"
 
+[tool.poetry.scripts]
+dpu = "pydpu.cli:main"
+
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
+Click = "^8.1"
 
 
 [tool.poetry.group.dev.dependencies]
