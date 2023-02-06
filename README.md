@@ -26,5 +26,5 @@ $ bump2version <patch|minor|major>
 # Push new tag
 $ git push --tags
 # Create GitHub release
-$ gh release create v$(poetry version) --generate-notes
+$ gh release create v$(poetry version -s) --generate-notes
 ```
