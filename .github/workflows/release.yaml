@@ -33,6 +33,8 @@ jobs:
 
     - name: Publish to PyPI
       run: poetry publish
+      env:
+        PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
 
   release-docker:
     uses: ./.github/workflows/docker.yaml
