@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "pydpu"
+version = "0.1.0"
+description = "Python library and cli to communicate with DPUs and IPUs"
+authors = ["OPI Dev <opi-dev@lists.opiproject.org>"]
+license = "Apache-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
