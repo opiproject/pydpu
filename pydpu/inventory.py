@@ -2,9 +2,14 @@
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
 
 import grpc
-from .proto.inventory import ipsec_pb2
-from .proto.inventory import ipsec_pb2_grpc
+
+from .proto.inventory import inventory_pb2, inventory_pb2_grpc
 
 
-def get():
-    print("tbd")
+def get_inventory():
+    print(
+        "tbd",
+        grpc.StatusCode.UNIMPLEMENTED,
+        inventory_pb2.InventoryGetRequest(),
+        inventory_pb2_grpc.InventorySvcStub(),
+    )
