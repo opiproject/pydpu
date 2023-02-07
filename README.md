@@ -17,6 +17,32 @@ This project welcomes contributions and suggestions.  We are happy to have the C
 
 See [CONTRIBUTING](https://github.com/opiproject/opi/blob/main/CONTRIBUTING.md) and [GitHub Basic Process](https://github.com/opiproject/opi/blob/main/doc-github-rules.md) for more details.
 
+## Installation
+
+There are several ways of running this CLI.
+
+### Docker
+
+```sh
+docker pull pydpu:<version>
+```
+
+You can specify a version like `0.1.1` or use `latest` to get the most up-to-date version.
+
+Run latest version of the CLI in a container:
+
+```sh
+docker run --rm -e pydpu:latest --help
+```
+
+Replace `--help` with any `pydpu` command, without `pydpu` itself.
+
+### PyPI
+
+```sh
+pip install pydpu
+```
+
 ## Releasing new versions
 
 ```sh
