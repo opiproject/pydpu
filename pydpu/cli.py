@@ -3,11 +3,9 @@ import sys
 
 import click
 
-from . import __version__
-
 
 @click.group()
-@click.version_option(__version__, "-V", "--version")
+@click.version_option(None, "-V", "--version")
 def main(args=None):
     pass  # pragma: no cover
 
