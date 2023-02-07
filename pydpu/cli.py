@@ -1,6 +1,7 @@
 """Console script for pydpu."""
 import click
 import ipsec
+import inventory
 
 
 @click.group()
@@ -16,6 +17,7 @@ def inventory():
 
 @inventory.command()
 def get():
+    inventory.get()
     click.echo("work in progress")
 
 
