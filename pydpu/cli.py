@@ -1,12 +1,10 @@
 """Console script for pydpu."""
-import sys
-
 import click
 
 
 @click.group()
 @click.version_option(None, "-V", "--version")
-def main(args=None):
+def main():
     pass  # pragma: no cover
 
 
@@ -31,4 +29,4 @@ def create_tunnel(**kwargs):
 
 
 if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
+    main()  # pragma: no cover
