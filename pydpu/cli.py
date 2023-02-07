@@ -1,7 +1,8 @@
 """Console script for pydpu."""
 import click
-import ipsec
-import inventory
+
+from .inventory import get_inventory
+from .ipsec import get_stats, create_new_tunnel
 
 
 @click.group()
@@ -17,7 +18,7 @@ def inventory():
 
 @inventory.command()
 def get():
-    inventory.get()
+    get_inventory()
     click.echo("work in progress")
 
 
@@ -28,7 +29,13 @@ def ipsec():
 
 @ipsec.command()
 def create_tunnel(**kwargs):
-    ipsec.stats()
+    create_new_tunnel()
+    click.echo("work in progress")
+
+
+@ipsec.command()
+def stats(**kwargs):
+    get_stats()
     click.echo("work in progress")
 
 
