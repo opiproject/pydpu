@@ -15,7 +15,7 @@ def inventory():
 
 @inventory.command()
 def get():
-    print("work in progress")
+    click.echo("work in progress")
 
 
 @main.group()
@@ -25,7 +25,7 @@ def ipsec():
 
 @ipsec.command()
 def create_tunnel(**kwargs):
-    print("work in progress")
+    click.echo("work in progress")
 
 
 if __name__ == "__main__":
