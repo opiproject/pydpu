@@ -1,5 +1,6 @@
 """Console script for pydpu."""
 import click
+import ipsec
 
 
 @click.group()
@@ -25,6 +26,7 @@ def ipsec():
 
 @ipsec.command()
 def create_tunnel(**kwargs):
+    ipsec.stats()
     click.echo("work in progress")
 
 
