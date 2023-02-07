@@ -12,6 +12,9 @@ dpu = "pydpu.cli:main"
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
 Click = "^8.1"
+grpcio = "^1.51.1"
+google = "^3.0.0"
+google-api-core = "^2.11.0"
 
 
 [tool.poetry.group.dev.dependencies]
