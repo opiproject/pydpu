@@ -1,4 +1,4 @@
-"""Console script for otel_python_cli."""
+"""Console script for pydpu."""
 import sys
 
 import click
