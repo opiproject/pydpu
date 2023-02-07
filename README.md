@@ -32,7 +32,7 @@ You can specify a version like `0.1.1` or use `latest` to get the most up-to-dat
 Run latest version of the CLI in a container:
 
 ```sh
-docker run --rm -e pydpu:latest --help
+docker run --rm pydpu:latest --help
 ```
 
 Replace `--help` with any `pydpu` command, without `pydpu` itself.
@@ -42,6 +42,34 @@ Replace `--help` with any `pydpu` command, without `pydpu` itself.
 ```sh
 pip install pydpu
 ```
+
+## Usage
+
+### Inventory
+
+To get inventory, run:
+
+```sh
+pydpu inventory get
+```
+
+### Ipsec
+
+To create a tunnel, run:
+
+```sh
+pydpu ipsec create-tunnel
+```
+
+To get statistics, run:
+
+```sh
+pydpu ipsec stats
+```
+
+## Packaging
+
+This project uses [poetry](https://python-poetry.org/) to manage dependencies, build, etc.
 
 ## Releasing new versions
 
