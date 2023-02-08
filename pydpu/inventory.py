@@ -11,5 +11,4 @@ def get_inventory():
         "tbd",
         grpc.StatusCode.UNIMPLEMENTED,
         inventory_pb2.InventoryGetRequest(),
-        inventory_pb2_grpc.InventorySvcStub(),
     )
