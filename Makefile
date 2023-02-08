@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
-.PHONY: clean clean-build clean-pyc clean-test help lint build docker format test
+.PHONY: clean clean-build clean-pyc clean-test clean-proto help lint build docker format test proto
 .DEFAULT_GOAL := help
 SHELL=/bin/bash
 
@@ -29,7 +29,7 @@ BROWSER := python -c "$$BROWSER_PYSCRIPT"
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
+clean: clean-build clean-pyc clean-test clean-proto ## remove all build, test, coverage and Python artifacts
 
 clean-build: ## remove build artifacts
 	rm -fr build/
@@ -49,6 +49,9 @@ clean-test: ## remove test and coverage artifacts
 	rm -f .coverage
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
+
+clean-proto: ## remove auto-generated protocol buffers
+	rm -fr /tmp/opi-api
 
 lint: ## lint the code
 	poetry run black --check .
@@ -74,3 +77,11 @@ build: clean ## builds source and wheel package
 
 docker: clean ## build docker image
 	docker build . -t pydpu:$(TAG)
+
+proto: clean ## auto-generate protocol buffers
+	git clone https://github.com/opiproject/opi-api.git "/tmp/opi-api"
+	cd "/tmp/opi-api/security" && $(MAKE)
+	cd "/tmp/opi-api/storage" && $(MAKE)
+	cd $(git rev-parse --show-toplevel)
+	cp /tmp/opi-api/security/v1/gen/python/*.py ./pydpu/proto/v1/
+	cp /tmp/opi-api/storage/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
