@@ -2,7 +2,7 @@
 import click
 
 from .inventory import get_inventory
-from .ipsec import get_stats, create_new_tunnel
+from .ipsec import create_new_tunnel, get_stats
 
 
 @click.group()
