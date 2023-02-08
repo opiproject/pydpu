@@ -3,7 +3,7 @@
 
 import grpc
 
-from .proto.v1 import inventory_pb2, inventory_pb2_grpc
+from .proto.v1 import inventory_pb2
 
 
 def get_inventory():

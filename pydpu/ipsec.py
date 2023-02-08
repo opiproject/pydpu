@@ -3,7 +3,7 @@
 
 import grpc
 
-from .proto.v1 import ipsec_pb2, ipsec_pb2_grpc
+from .proto.v1 import ipsec_pb2
 
 
 def get_stats():
