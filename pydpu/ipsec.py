@@ -11,7 +11,6 @@ def get_stats():
         "tbd",
         grpc.StatusCode.UNIMPLEMENTED,
         ipsec_pb2.IPsecStatsReq(),
-        ipsec_pb2_grpc.IPsecStub(),
     )
 
 
@@ -20,5 +19,4 @@ def create_new_tunnel():
         "tbd",
         grpc.StatusCode.UNIMPLEMENTED,
         ipsec_pb2.IPsecStatsReq(),
-        ipsec_pb2_grpc.IPsecStub(),
     )
