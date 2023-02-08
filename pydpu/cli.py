@@ -3,6 +3,7 @@ import click
 
 from .inventory import get_inventory
 from .ipsec import create_new_tunnel, get_stats
+from .storage import nvme_subsystems
 
 
 @click.group()
@@ -36,6 +37,17 @@ def create_tunnel(**kwargs):
 @ipsec.command()
 def stats(**kwargs):
     get_stats()
+    click.echo("work in progress")
+
+
+@main.group()
+def storage():
+    pass  # pragma: no cover
+
+
+@storage.command()
+def subsystems(**kwargs):
+    nvme_subsystems()
     click.echo("work in progress")
 
 

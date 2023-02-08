@@ -28,3 +28,9 @@ def test_cli_ipsec_create_tunnel(runner):
     """Test `dpu ipsec create-tunnel"""
     result = runner.invoke(cli.main, ("ipsec", "create-tunnel"))
     assert result.exit_code == 0
+
+
+def test_cli_storage_subsystems(runner):
+    """Test `dpu storage subsystems"""
+    result = runner.invoke(cli.main, ("storage", "subsystems"))
+    assert result.exit_code == 0
