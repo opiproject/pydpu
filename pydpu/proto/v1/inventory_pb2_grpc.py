@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from v1 import inventory_pb2 as v1_dot_inventory__pb2
+import inventory_pb2 as inventory__pb2
 
 
 class InventorySvcStub(object):
@@ -17,8 +17,8 @@ class InventorySvcStub(object):
         """
         self.InventoryGet = channel.unary_unary(
                 '/opi_api.inventory.v1.InventorySvc/InventoryGet',
-                request_serializer=v1_dot_inventory__pb2.InventoryGetRequest.SerializeToString,
-                response_deserializer=v1_dot_inventory__pb2.InventoryGetResponse.FromString,
+                request_serializer=inventory__pb2.InventoryGetRequest.SerializeToString,
+                response_deserializer=inventory__pb2.InventoryGetResponse.FromString,
                 )
 
 
@@ -38,8 +38,8 @@ def add_InventorySvcServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'InventoryGet': grpc.unary_unary_rpc_method_handler(
                     servicer.InventoryGet,
-                    request_deserializer=v1_dot_inventory__pb2.InventoryGetRequest.FromString,
-                    response_serializer=v1_dot_inventory__pb2.InventoryGetResponse.SerializeToString,
+                    request_deserializer=inventory__pb2.InventoryGetRequest.FromString,
+                    response_serializer=inventory__pb2.InventoryGetResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -64,7 +64,7 @@ class InventorySvc(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/opi_api.inventory.v1.InventorySvc/InventoryGet',
-            v1_dot_inventory__pb2.InventoryGetRequest.SerializeToString,
-            v1_dot_inventory__pb2.InventoryGetResponse.FromString,
+            inventory__pb2.InventoryGetRequest.SerializeToString,
+            inventory__pb2.InventoryGetResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
