@@ -6,9 +6,10 @@ import grpc
 from .proto.v1 import inventory_pb2
 
 
-def get_inventory():
+def get_inventory(address):
     print(
         "tbd",
+        address,
         grpc.StatusCode.UNIMPLEMENTED,
         inventory_pb2.InventoryGetRequest(),
     )

@@ -8,46 +8,58 @@ from .storage import nvme_subsystems
 
 @click.group()
 @click.version_option(None, "-V", "--version")
-def main():
-    pass  # pragma: no cover
+@click.option("--address", help="IP address of the DPU gRPC management.", required=True)
+@click.pass_context
+def main(ctx, address):
+    # ensure that ctx.obj exists and is a dict (in case `cli()` is called
+    # by means other than the `if` block below)
+    ctx.ensure_object(dict)
+    ctx.obj["ADDRESS"] = address
 
 
 @main.group()
-def inventory():
+@click.pass_context
+def inventory(ctx):
     pass  # pragma: no cover
 
 
 @inventory.command()
-def get():
-    get_inventory()
+@click.pass_context
+def get(ctx):
+    get_inventory(ctx.obj["ADDRESS"])
     click.echo("work in progress")
 
 
 @main.group()
-def ipsec():
+@click.pass_context
+def ipsec(ctx):
     pass  # pragma: no cover
 
 
 @ipsec.command()
-def create_tunnel(**kwargs):
-    create_new_tunnel()
+@click.pass_context
+def create_tunnel(ctx, **kwargs):
+    create_new_tunnel(ctx.obj["ADDRESS"])
     click.echo("work in progress")
 
 
 @ipsec.command()
-def stats(**kwargs):
-    get_stats()
+@click.pass_context
+def stats(ctx, **kwargs):
+    get_stats(ctx.obj["ADDRESS"])
     click.echo("work in progress")
 
 
 @main.group()
-def storage():
+@click.pass_context
+def storage(ctx):
     pass  # pragma: no cover
 
 
 @storage.command()
-def subsystems(**kwargs):
-    nvme_subsystems()
+@click.pass_context
+def subsystems(ctx, **kwargs):
+    nvme_subsystems(ctx.obj["ADDRESS"])
     click.echo("work in progress")
 
 
