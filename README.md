@@ -45,6 +45,15 @@ pip install pydpu
 
 ## Usage
 
+### Version
+
+To get version, run:
+
+```sh
+$ pydpu --version
+dpu, version 0.1.1
+```
+
 ### Inventory
 
 To get inventory, run:
@@ -65,6 +74,26 @@ To get statistics, run:
 
 ```sh
 pydpu --address=localhost:50151 ipsec stats
+```
+
+### Storage
+
+To create a subsystem, run:
+
+```sh
+pydpu --address=localhost:50151 storage subsystem
+```
+
+To create a controller, run:
+
+```sh
+pydpu --address=localhost:50151 storage controller
+```
+
+To create a namespace, run:
+
+```sh
+pydpu --address=localhost:50151 storage namespace
 ```
 
 ## Packaging
