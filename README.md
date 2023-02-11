@@ -50,7 +50,7 @@ pip install pydpu
 To get inventory, run:
 
 ```sh
-pydpu inventory get
+pydpu --address=localhost:50151 inventory get
 ```
 
 ### Ipsec
@@ -58,13 +58,13 @@ pydpu inventory get
 To create a tunnel, run:
 
 ```sh
-pydpu ipsec create-tunnel
+pydpu --address=localhost:50151 ipsec create-tunnel
 ```
 
 To get statistics, run:
 
 ```sh
-pydpu ipsec stats
+pydpu --address=localhost:50151 ipsec stats
 ```
 
 ## Packaging
