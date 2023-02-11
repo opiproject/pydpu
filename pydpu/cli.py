@@ -3,7 +3,12 @@ import click
 
 from .inventory import get_inventory
 from .ipsec import create_new_tunnel, get_stats
-from .storage import nvme_subsystems
+from .storage import (
+    create_nvme_controller,
+    create_nvme_namespace,
+    create_nvme_subsystem,
+    list_nvme_subsystems,
+)
 
 
 @click.group()
@@ -58,8 +63,29 @@ def storage(ctx):
 
 @storage.command()
 @click.pass_context
-def subsystems(ctx, **kwargs):
-    nvme_subsystems(ctx.obj["ADDRESS"])
+def list(ctx, **kwargs):
+    list_nvme_subsystems(ctx.obj["ADDRESS"])
+    click.echo("work in progress")
+
+
+@storage.command()
+@click.pass_context
+def subsystem(ctx, **kwargs):
+    create_nvme_subsystem(ctx.obj["ADDRESS"])
+    click.echo("work in progress")
+
+
+@storage.command()
+@click.pass_context
+def controller(ctx, **kwargs):
+    create_nvme_controller(ctx.obj["ADDRESS"])
+    click.echo("work in progress")
+
+
+@storage.command()
+@click.pass_context
+def namespace(ctx, **kwargs):
+    create_nvme_namespace(ctx.obj["ADDRESS"])
     click.echo("work in progress")
 
 
