@@ -34,9 +34,33 @@ def test_cli_ipsec_create_tunnel(runner):
     assert result.exit_code == 0
 
 
-def test_cli_storage_subsystems(runner):
-    """Test `dpu storage subsystems"""
+def test_cli_storage_list(runner):
+    """Test `dpu storage list"""
     result = runner.invoke(
-        cli.main, ("--address", "localhost:50003", "storage", "subsystems")
+        cli.main, ("--address", "localhost:50003", "storage", "list")
+    )
+    assert result.exit_code == 0
+
+
+def test_cli_storage_subsystem(runner):
+    """Test `dpu storage subsystem"""
+    result = runner.invoke(
+        cli.main, ("--address", "localhost:50004", "storage", "subsystem")
+    )
+    assert result.exit_code == 0
+
+
+def test_cli_storage_controller(runner):
+    """Test `dpu storage controller"""
+    result = runner.invoke(
+        cli.main, ("--address", "localhost:50005", "storage", "controller")
+    )
+    assert result.exit_code == 0
+
+
+def test_cli_storage_namespace(runner):
+    """Test `dpu storage namespace"""
+    result = runner.invoke(
+        cli.main, ("--address", "localhost:50006", "storage", "namespace")
     )
     assert result.exit_code == 0
