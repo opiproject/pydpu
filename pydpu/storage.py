@@ -52,7 +52,9 @@ def create_nvme_controller(address):
                     nv_me_controller=frontend_nvme_pcie_pb2.NVMeController(
                         spec=frontend_nvme_pcie_pb2.NVMeControllerSpec(
                             id=object_key_pb2.ObjectKey(value="opi-ctrl"),
-                            subsystem_id=object_key_pb2.ObjectKey(value="opi-subsystem"),
+                            subsystem_id=object_key_pb2.ObjectKey(
+                                value="opi-subsystem"
+                            ),
                             pcie_id=opicommon_pb2.PciEndpoint(
                                 physical_function=1, virtual_function=2, port_id=3
                             ),
@@ -79,7 +81,9 @@ def create_nvme_namespace(address):
                     nv_me_namespace=frontend_nvme_pcie_pb2.NVMeNamespace(
                         spec=frontend_nvme_pcie_pb2.NVMeNamespaceSpec(
                             id=object_key_pb2.ObjectKey(value="opi-ns"),
-                            subsystem_id=object_key_pb2.ObjectKey(value="opi-subsystem"),
+                            subsystem_id=object_key_pb2.ObjectKey(
+                                value="opi-subsystem"
+                            ),
                             volume_id=object_key_pb2.ObjectKey(value="Malloc1"),
                             uuid=uuid_pb2.Uuid(
                                 value="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb"
