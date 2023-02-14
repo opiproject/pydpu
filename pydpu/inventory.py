@@ -3,13 +3,14 @@
 
 import grpc
 
-from .proto.v1 import inventory_pb2
+from .proto.v1 import inventory_pb2, inventory_pb2_grpc
 
 
 def get_inventory(address):
-    print(
-        "tbd",
-        address,
-        grpc.StatusCode.UNIMPLEMENTED,
-        inventory_pb2.InventoryGetRequest(),
-    )
+    try:
+        with grpc.insecure_channel(address) as channel:
+            stub = inventory_pb2_grpc.InventorySvcStub(channel)
+            res = stub.InventoryGet(request=inventory_pb2.InventoryGetRequest())
+            return res
+    except grpc.RpcError as e:
+        print(e)

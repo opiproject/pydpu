@@ -332,6 +332,7 @@ def create_nvme_subsystem(address):
         s = NvmeSubsystem(
             nqn="nqn.2022-09.io.spdk:opi1", model="OPI Model", serial="OPI SN"
         )
+        print(s)
         res = s.create(address)
         print(res)
     except grpc.RpcError as e:
@@ -343,7 +344,9 @@ def create_nvme_controller(address):
         s = NvmeSubsystem(
             nqn="nqn.2022-09.io.spdk:opi1", model="OPI Model", serial="OPI SN"
         )
+        print(s)
         c = NvmeController(subsystem=s, queue=1024)
+        print(c)
         res = c.create(address)
         print(res)
     except grpc.RpcError as e:
@@ -355,7 +358,9 @@ def create_nvme_namespace(address):
         s = NvmeSubsystem(
             nqn="nqn.2022-09.io.spdk:opi1", model="OPI Model", serial="OPI SN"
         )
+        print(s)
         n = NvmeNamespace(subsystem=s, volume="Malloc1")
+        print(n)
         res = n.create(address)
         print(res)
     except grpc.RpcError as e:
