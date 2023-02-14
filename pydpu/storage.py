@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
 
+import uuid
+
 import grpc
 
 from .proto.v1 import (
@@ -15,16 +17,21 @@ from .proto.v1 import (
 class NvmeSubsystem:
     """An object representing NVMe subsystem.
     Args:
-        name: unique name to identfy subsystem.
-        nqn:  per NVMe spec each subsystem has an NVMe Qualified Name.
+        nqn:    per NVMe spec each subsystem has an NVMe Qualified Name.
+        model:  model number of the subsystem that will be visible to host.
+        serial: serial number of the subsystem that will be visible to host.
+        ns:     max amount of namespaces allowed in this subsystem.
     """
 
     def __repr__(self) -> str:
-        return f"{type(self).__name__}({str(self.name)}, nqn={str(self.nqn)})"
+        return f"{type(self).__name__}({str(self.id)}, nqn={str(self.nqn)})"
 
-    def __init__(self, name: str, nqn: str) -> None:
-        self.name = name
+    def __init__(self, nqn: str, model="OPI Model", serial="OPI SN", ns=10) -> None:
+        self.id = uuid.uuid1()
         self.nqn = nqn
+        self.model = model
+        self.serial = serial
+        self.ns = ns
 
     def create(self, address):
         with grpc.insecure_channel(address) as channel:
@@ -33,11 +40,11 @@ class NvmeSubsystem:
                 request=frontend_nvme_pcie_pb2.CreateNVMeSubsystemRequest(
                     nv_me_subsystem=frontend_nvme_pcie_pb2.NVMeSubsystem(
                         spec=frontend_nvme_pcie_pb2.NVMeSubsystemSpec(
-                            id=object_key_pb2.ObjectKey(value="opi-subsystem"),
-                            model_number="OPI Model",
-                            serial_number="OPI SN",
-                            max_namespaces=10,
-                            nqn="nqn.2022-09.io.spdk:opi1",
+                            id=object_key_pb2.ObjectKey(value=str(self.id)),
+                            model_number=self.model,
+                            serial_number=self.serial,
+                            max_namespaces=self.ns,
+                            nqn=self.nqn,
                         )
                     )
                 )
@@ -51,11 +58,11 @@ class NvmeSubsystem:
                 request=frontend_nvme_pcie_pb2.UpdateNVMeSubsystemRequest(
                     nv_me_subsystem=frontend_nvme_pcie_pb2.NVMeSubsystem(
                         spec=frontend_nvme_pcie_pb2.NVMeSubsystemSpec(
-                            id=object_key_pb2.ObjectKey(value="opi-subsystem"),
-                            model_number="OPI Model",
-                            serial_number="OPI SN",
-                            max_namespaces=10,
-                            nqn="nqn.2022-09.io.spdk:opi1",
+                            id=object_key_pb2.ObjectKey(value=str(self.id)),
+                            model_number=self.model,
+                            serial_number=self.serial,
+                            max_namespaces=self.ns,
+                            nqn=self.nqn,
                         )
                     )
                 )
@@ -75,7 +82,7 @@ class NvmeSubsystem:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.DeleteNVMeSubsystem(
                 request=frontend_nvme_pcie_pb2.DeleteNVMeSubsystemRequest(
-                    name="opi-subsystem",
+                    name=str(self.id),
                 )
             )
             return res
@@ -85,7 +92,7 @@ class NvmeSubsystem:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.GetNVMeSubsystem(
                 request=frontend_nvme_pcie_pb2.GetNVMeSubsystemRequest(
-                    name="opi-subsystem",
+                    name=str(self.id),
                 )
             )
             return res
@@ -95,25 +102,26 @@ class NvmeSubsystem:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.NVMeSubsystemStats(
                 request=frontend_nvme_pcie_pb2.NVMeSubsystemStatsRequest(
-                    subsystem_id=object_key_pb2.ObjectKey(value="opi-subsystem")
+                    subsystem_id=object_key_pb2.ObjectKey(value=str(self.id))
                 )
             )
             return res
 
 
 class NvmeController:
-    """An object representing NVMe subsystem.
+    """An object representing NVMe controller.
     Args:
-        name: unique name to identfy subsystem.
-        nqn:  per NVMe spec each subsystem has an NVMe Qualified Name.
+        subsystem: substsem name that controller belongs to.
+        queue:     queue depth for both SQ (submition) and CQ (completion).
     """
 
     def __repr__(self) -> str:
-        return f"{type(self).__name__}({str(self.name)}, nqn={str(self.nqn)})"
+        return f"{type(self).__name__}({str(self.id)}, nqn={str(self.queue)})"
 
-    def __init__(self, name: str, nqn: str) -> None:
-        self.name = name
-        self.nqn = nqn
+    def __init__(self, subsystem: NvmeSubsystem, queue: int) -> None:
+        self.id = uuid.uuid1()
+        self.subsystem = subsystem
+        self.queue = queue
 
     def create(self, address):
         with grpc.insecure_channel(address) as channel:
@@ -122,9 +130,9 @@ class NvmeController:
                 request=frontend_nvme_pcie_pb2.CreateNVMeControllerRequest(
                     nv_me_controller=frontend_nvme_pcie_pb2.NVMeController(
                         spec=frontend_nvme_pcie_pb2.NVMeControllerSpec(
-                            id=object_key_pb2.ObjectKey(value="opi-ctrl"),
+                            id=object_key_pb2.ObjectKey(value=str(self.id)),
                             subsystem_id=object_key_pb2.ObjectKey(
-                                value="opi-subsystem"
+                                value=str(self.subsystem.id)
                             ),
                             pcie_id=opicommon_pb2.PciEndpoint(
                                 physical_function=1, virtual_function=2, port_id=3
@@ -147,9 +155,9 @@ class NvmeController:
                 request=frontend_nvme_pcie_pb2.UpdateNvmeControllerRequest(
                     nv_me_controller=frontend_nvme_pcie_pb2.NVMeController(
                         spec=frontend_nvme_pcie_pb2.NVMeControllerSpec(
-                            id=object_key_pb2.ObjectKey(value="opi-ctrl"),
+                            id=object_key_pb2.ObjectKey(value=str(self.id)),
                             subsystem_id=object_key_pb2.ObjectKey(
-                                value="opi-subsystem"
+                                value=str(self.subsystem.id)
                             ),
                             pcie_id=opicommon_pb2.PciEndpoint(
                                 physical_function=1, virtual_function=2, port_id=3
@@ -170,7 +178,7 @@ class NvmeController:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.ListNVMeControllers(
                 request=frontend_nvme_pcie_pb2.ListNVMeControllersRequest(
-                    parent="opi-subsystem"
+                    parent=str(self.subsystem.id)
                 )
             )
             return res
@@ -180,7 +188,7 @@ class NvmeController:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.DeleteNVMeController(
                 request=frontend_nvme_pcie_pb2.DeleteNVMeControllerRequest(
-                    name="opi-ctrl",
+                    name=str(self.id),
                 )
             )
             return res
@@ -190,7 +198,7 @@ class NvmeController:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.GetNVMeController(
                 request=frontend_nvme_pcie_pb2.GetNVMeControllerRequest(
-                    name="opi-ctrl",
+                    name=str(self.id),
                 )
             )
             return res
@@ -200,25 +208,26 @@ class NvmeController:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.NVMeControllerStats(
                 request=frontend_nvme_pcie_pb2.NVMeControllerStatsRequest(
-                    id=object_key_pb2.ObjectKey(value="opi-ctrl")
+                    id=object_key_pb2.ObjectKey(value=str(self.id))
                 )
             )
             return res
 
 
 class NvmeNamespace:
-    """An object representing NVMe subsystem.
+    """An object representing NVMe namespace.
     Args:
-        name: unique name to identfy subsystem.
-        nqn:  per NVMe spec each subsystem has an NVMe Qualified Name.
+        subsystem: subsystem name that controller belongs to.
+        volume:    backend volume to connect the namespace to.
     """
 
     def __repr__(self) -> str:
-        return f"{type(self).__name__}({str(self.name)}, nqn={str(self.nqn)})"
+        return f"{type(self).__name__}({str(self.id)}, volume={str(self.volume)})"
 
-    def __init__(self, name: str, nqn: str) -> None:
-        self.name = name
-        self.nqn = nqn
+    def __init__(self, subsystem: NvmeSubsystem, volume: str) -> None:
+        self.id = uuid.uuid1()
+        self.subsystem = subsystem
+        self.volume = volume
 
     def create(self, address):
         with grpc.insecure_channel(address) as channel:
@@ -227,11 +236,11 @@ class NvmeNamespace:
                 request=frontend_nvme_pcie_pb2.CreateNVMeNamespaceRequest(
                     nv_me_namespace=frontend_nvme_pcie_pb2.NVMeNamespace(
                         spec=frontend_nvme_pcie_pb2.NVMeNamespaceSpec(
-                            id=object_key_pb2.ObjectKey(value="opi-ns"),
+                            id=object_key_pb2.ObjectKey(value=str(self.id)),
                             subsystem_id=object_key_pb2.ObjectKey(
-                                value="opi-subsystem"
+                                value=str(self.subsystem.id)
                             ),
-                            volume_id=object_key_pb2.ObjectKey(value="Malloc1"),
+                            volume_id=object_key_pb2.ObjectKey(value=self.volume),
                             uuid=uuid_pb2.Uuid(
                                 value="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb"
                             ),
@@ -251,9 +260,9 @@ class NvmeNamespace:
                 request=frontend_nvme_pcie_pb2.UpdateNVMeNamespaceRequest(
                     nv_me_namespace=frontend_nvme_pcie_pb2.NVMeNamespace(
                         spec=frontend_nvme_pcie_pb2.NVMeNamespaceSpec(
-                            id=object_key_pb2.ObjectKey(value="opi-ns"),
+                            id=object_key_pb2.ObjectKey(value=str(self.id)),
                             subsystem_id=object_key_pb2.ObjectKey(
-                                value="opi-subsystem"
+                                value=str(self.subsystem.id)
                             ),
                             volume_id=object_key_pb2.ObjectKey(value="Malloc1"),
                             uuid=uuid_pb2.Uuid(
@@ -273,7 +282,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.ListNVMeNamespaces(
                 request=frontend_nvme_pcie_pb2.ListNVMeNamespacesRequest(
-                    parent="opi-subsystem"
+                    parent=str(self.subsystem.id)
                 )
             )
             return res
@@ -283,7 +292,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.DeleteNVMeNamespace(
                 request=frontend_nvme_pcie_pb2.DeleteNVMeNamespaceRequest(
-                    name="opi-ns",
+                    name=str(self.id),
                 )
             )
             return res
@@ -293,7 +302,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.GetNVMeNamespace(
                 request=frontend_nvme_pcie_pb2.GetNVMeNamespaceRequest(
-                    name="opi-ns",
+                    name=str(self.id),
                 )
             )
             return res
@@ -303,7 +312,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.NVMeNamespaceStats(
                 request=frontend_nvme_pcie_pb2.NVMeNamespaceStatsRequest(
-                    namespace_id=object_key_pb2.ObjectKey(value="opi-ns")
+                    namespace_id=object_key_pb2.ObjectKey(value=str(self.id))
                 )
             )
             return res
@@ -320,7 +329,9 @@ def list_nvme_subsystems(address):
 
 def create_nvme_subsystem(address):
     try:
-        s = NvmeSubsystem(name="opi-subsystem", nqn="nqn.2022-09.io.spdk:opi1")
+        s = NvmeSubsystem(
+            nqn="nqn.2022-09.io.spdk:opi1", model="OPI Model", serial="OPI SN"
+        )
         res = s.create(address)
         print(res)
     except grpc.RpcError as e:
@@ -329,8 +340,11 @@ def create_nvme_subsystem(address):
 
 def create_nvme_controller(address):
     try:
-        s = NvmeController(name="opi-ctrl", nqn="nqn.2022-09.io.spdk:opi1")
-        res = s.create(address)
+        s = NvmeSubsystem(
+            nqn="nqn.2022-09.io.spdk:opi1", model="OPI Model", serial="OPI SN"
+        )
+        c = NvmeController(subsystem=s, queue=1024)
+        res = c.create(address)
         print(res)
     except grpc.RpcError as e:
         print(e)
@@ -338,8 +352,11 @@ def create_nvme_controller(address):
 
 def create_nvme_namespace(address):
     try:
-        s = NvmeNamespace(name="opi-ns", nqn="nqn.2022-09.io.spdk:opi1")
-        res = s.create(address)
+        s = NvmeSubsystem(
+            nqn="nqn.2022-09.io.spdk:opi1", model="OPI Model", serial="OPI SN"
+        )
+        n = NvmeNamespace(subsystem=s, volume="Malloc1")
+        res = n.create(address)
         print(res)
     except grpc.RpcError as e:
         print(e)
