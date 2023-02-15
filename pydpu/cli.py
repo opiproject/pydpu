@@ -1,14 +1,10 @@
 """Console script for pydpu."""
 import click
+import grpc
 
 from .inventory import get_inventory
 from .ipsec import create_new_tunnel, get_stats
-from .storage import (
-    create_nvme_controller,
-    create_nvme_namespace,
-    create_nvme_subsystem,
-    list_nvme_subsystems,
-)
+from .storage import NvmeController, NvmeNamespace, NvmeSubsystem
 
 
 @click.group()
@@ -64,29 +60,65 @@ def storage(ctx):
 @storage.command()
 @click.pass_context
 def list(ctx, **kwargs):
-    list_nvme_subsystems(ctx.obj["ADDRESS"])
     click.echo("work in progress")
+    try:
+        s = NvmeSubsystem(
+            nqn="nqn.2022-09.io.spdk:opi1", model="OPI Model", serial="OPI SN"
+        )
+        click.echo(s)
+        res = s.list(ctx.obj["ADDRESS"])
+        click.echo(res)
+    except grpc.RpcError as e:
+        print(e)
 
 
 @storage.command()
 @click.pass_context
 def subsystem(ctx, **kwargs):
-    create_nvme_subsystem(ctx.obj["ADDRESS"])
     click.echo("work in progress")
+    try:
+        s = NvmeSubsystem(
+            nqn="nqn.2022-09.io.spdk:opi1", model="OPI Model", serial="OPI SN"
+        )
+        click.echo(s)
+        res = s.create(ctx.obj["ADDRESS"])
+        click.echo(res)
+    except grpc.RpcError as e:
+        print(e)
 
 
 @storage.command()
 @click.pass_context
 def controller(ctx, **kwargs):
-    create_nvme_controller(ctx.obj["ADDRESS"])
     click.echo("work in progress")
+    try:
+        s = NvmeSubsystem(
+            nqn="nqn.2022-09.io.spdk:opi1", model="OPI Model", serial="OPI SN"
+        )
+        click.echo(s)
+        c = NvmeController(subsystem=s, queue=1024)
+        click.echo(c)
+        res = c.create(ctx.obj["ADDRESS"])
+        click.echo(res)
+    except grpc.RpcError as e:
+        click.echo(e)
 
 
 @storage.command()
 @click.pass_context
 def namespace(ctx, **kwargs):
-    create_nvme_namespace(ctx.obj["ADDRESS"])
     click.echo("work in progress")
+    try:
+        s = NvmeSubsystem(
+            nqn="nqn.2022-09.io.spdk:opi1", model="OPI Model", serial="OPI SN"
+        )
+        click.echo(s)
+        n = NvmeNamespace(subsystem=s, volume="Malloc1")
+        click.echo(n)
+        res = n.create(ctx.obj["ADDRESS"])
+        click.echo(res)
+    except grpc.RpcError as e:
+        click.echo(e)
 
 
 if __name__ == "__main__":
