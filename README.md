@@ -8,6 +8,8 @@
 [![Linters](https://github.com/opiproject/pydpu/actions/workflows/linters.yml/badge.svg)](https://github.com/opiproject/pydpu/actions/workflows/linters.yml)
 [![Docker](https://github.com/opiproject/pydpu/actions/workflows/docker.yaml/badge.svg)](https://github.com/opiproject/pydpu/actions/workflows/docker.yaml)
 [![Tests](https://github.com/opiproject/pydpu/actions/workflows/test.yaml/badge.svg)](https://github.com/opiproject/pydpu/actions/workflows/test.yaml)
+[![GitHub stars](https://img.shields.io/github/stars/opiproject/pydpu.svg?style=flat-square&label=github%20stars)](https://github.com/opiproject/pydpu)
+[![GitHub Contributors](https://img.shields.io/github/contributors/opiproject/pydpu.svg?style=flat-square)](https://github.com/opiproject/pydpu/graphs/contributors)
 
 Python library and cli to communicate with DPUs and IPUs
 
