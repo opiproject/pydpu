@@ -2,6 +2,7 @@
 import click
 import grpc
 
+from .evpn import evpn_configure
 from .inventory import get_inventory
 from .ipsec import create_new_tunnel, get_stats
 from .storage import NvmeController, NvmeNamespace, NvmeSubsystem
@@ -28,6 +29,19 @@ def inventory(ctx):
 @click.pass_context
 def get(ctx):
     get_inventory(ctx.obj["ADDRESS"])
+    click.echo("work in progress")
+
+
+@main.group()
+@click.pass_context
+def evpn(ctx):
+    pass  # pragma: no cover
+
+
+@evpn.command()
+@click.pass_context
+def iface(ctx):
+    evpn_configure(ctx.obj["ADDRESS"])
     click.echo("work in progress")
 
 

@@ -3,16 +3,19 @@
 
 import grpc
 
-from .proto.v1 import inventory_pb2, inventory_pb2_grpc
+from .proto.v1 import (  # , interface_pb2, interface_pb2_grpc
+    cloudrpc_pb2,
+    cloudrpc_pb2_grpc,
+)
 
-# TODO: replace inventory with evpn
+# TODO: replace interface with evpn
 
 
 def evpn_configure(address):
     try:
         with grpc.insecure_channel(address) as channel:
-            stub = inventory_pb2_grpc.InventorySvcStub(channel)
-            res = stub.InventoryGet(request=inventory_pb2.InventoryGetRequest())
+            stub = cloudrpc_pb2_grpc.CloudInfraServiceStub(channel)
+            res = stub.CreateInterface(request=cloudrpc_pb2.CreateInterfaceRequest())
             return res
     except grpc.RpcError as e:
         print(e)
