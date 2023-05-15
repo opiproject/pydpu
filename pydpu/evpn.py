@@ -7,6 +7,7 @@ from .proto.v1 import inventory_pb2, inventory_pb2_grpc
 
 # TODO: replace inventory with evpn
 
+
 def evpn_configure(address):
     try:
         with grpc.insecure_channel(address) as channel:
