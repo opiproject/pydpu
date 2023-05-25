@@ -82,7 +82,9 @@ proto: clean ## auto-generate protocol buffers
 	git clone https://github.com/opiproject/opi-api.git "/tmp/opi-api"
 	cd "/tmp/opi-api/security" && $(MAKE)
 	cd "/tmp/opi-api/storage" && $(MAKE)
+	cd "/tmp/opi-api/network/cloud" && $(MAKE)
 	cd $(git rev-parse --show-toplevel)
 	cp /tmp/opi-api/common/v1/gen/python/*.py ./pydpu/proto/v1/
 	cp /tmp/opi-api/security/v1/gen/python/*.py ./pydpu/proto/v1/
 	cp /tmp/opi-api/storage/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
+	cp /tmp/opi-api/network/cloud/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
