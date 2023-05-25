@@ -38,15 +38,15 @@ class NvmeSubsystem:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNVMeSubsystem(
                 request=frontend_nvme_pcie_pb2.CreateNVMeSubsystemRequest(
+                    nv_me_subsystem_id=str(self.id),
                     nv_me_subsystem=frontend_nvme_pcie_pb2.NVMeSubsystem(
                         spec=frontend_nvme_pcie_pb2.NVMeSubsystemSpec(
-                            id=object_key_pb2.ObjectKey(value=str(self.id)),
                             model_number=self.model,
                             serial_number=self.serial,
                             max_namespaces=self.ns,
                             nqn=self.nqn,
                         )
-                    )
+                    ),
                 )
             )
             return res
@@ -56,15 +56,15 @@ class NvmeSubsystem:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.UpdateNVMeSubsystem(
                 request=frontend_nvme_pcie_pb2.UpdateNVMeSubsystemRequest(
+                    nv_me_subsystem_id=str(self.id),
                     nv_me_subsystem=frontend_nvme_pcie_pb2.NVMeSubsystem(
                         spec=frontend_nvme_pcie_pb2.NVMeSubsystemSpec(
-                            id=object_key_pb2.ObjectKey(value=str(self.id)),
                             model_number=self.model,
                             serial_number=self.serial,
                             max_namespaces=self.ns,
                             nqn=self.nqn,
                         )
-                    )
+                    ),
                 )
             )
             return res
@@ -128,9 +128,9 @@ class NvmeController:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNVMeController(
                 request=frontend_nvme_pcie_pb2.CreateNVMeControllerRequest(
+                    nv_me_controller_id=str(self.id),
                     nv_me_controller=frontend_nvme_pcie_pb2.NVMeController(
                         spec=frontend_nvme_pcie_pb2.NVMeControllerSpec(
-                            id=object_key_pb2.ObjectKey(value=str(self.id)),
                             subsystem_id=object_key_pb2.ObjectKey(
                                 value=str(self.subsystem.id)
                             ),
@@ -143,7 +143,7 @@ class NvmeController:
                             cqes=8,
                             nvme_controller_id=1,
                         )
-                    )
+                    ),
                 )
             )
             return res
@@ -153,9 +153,9 @@ class NvmeController:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.UpdateNvmeController(
                 request=frontend_nvme_pcie_pb2.UpdateNvmeControllerRequest(
+                    nv_me_controller_id=str(self.id),
                     nv_me_controller=frontend_nvme_pcie_pb2.NVMeController(
                         spec=frontend_nvme_pcie_pb2.NVMeControllerSpec(
-                            id=object_key_pb2.ObjectKey(value=str(self.id)),
                             subsystem_id=object_key_pb2.ObjectKey(
                                 value=str(self.subsystem.id)
                             ),
@@ -168,7 +168,7 @@ class NvmeController:
                             cqes=8,
                             nvme_controller_id=1,
                         )
-                    )
+                    ),
                 )
             )
             return res
@@ -234,9 +234,9 @@ class NvmeNamespace:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNVMeNamespace(
                 request=frontend_nvme_pcie_pb2.CreateNVMeNamespaceRequest(
+                    nv_me_namespace_id=str(self.id),
                     nv_me_namespace=frontend_nvme_pcie_pb2.NVMeNamespace(
                         spec=frontend_nvme_pcie_pb2.NVMeNamespaceSpec(
-                            id=object_key_pb2.ObjectKey(value=str(self.id)),
                             subsystem_id=object_key_pb2.ObjectKey(
                                 value=str(self.subsystem.id)
                             ),
@@ -248,7 +248,7 @@ class NvmeNamespace:
                             eui64=1967554867335598546,
                             host_nsid=1,
                         )
-                    )
+                    ),
                 )
             )
             return res
@@ -258,9 +258,9 @@ class NvmeNamespace:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.UpdateNVMeNamespace(
                 request=frontend_nvme_pcie_pb2.UpdateNVMeNamespaceRequest(
+                    nv_me_namespace_id=str(self.id),
                     nv_me_namespace=frontend_nvme_pcie_pb2.NVMeNamespace(
                         spec=frontend_nvme_pcie_pb2.NVMeNamespaceSpec(
-                            id=object_key_pb2.ObjectKey(value=str(self.id)),
                             subsystem_id=object_key_pb2.ObjectKey(
                                 value=str(self.subsystem.id)
                             ),
@@ -272,7 +272,7 @@ class NvmeNamespace:
                             eui64=1967554867335598546,
                             host_nsid=1,
                         )
-                    )
+                    ),
                 )
             )
             return res
