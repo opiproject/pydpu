@@ -10,7 +10,7 @@ def get_inventory(address):
     try:
         with grpc.insecure_channel(address) as channel:
             stub = inventory_pb2_grpc.InventorySvcStub(channel)
-            res = stub.InventoryGet(request=inventory_pb2.InventoryGetRequest())
+            res = stub.GetInventory(request=inventory_pb2.GetInventoryRequest())
             return res
     except grpc.RpcError as e:
         print(e)
