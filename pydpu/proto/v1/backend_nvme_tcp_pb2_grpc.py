@@ -7,7 +7,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class NVMfRemoteControllerServiceStub(object):
-    """Back End (network-facing) APIs. Nvme/TCP and Nvme/RoCEv2 protocols are covered by this service.
+    """Back End (network-facing) APIs. NVMe/TCP and NVMe/RoCEv2 protocols are covered by this service.
     """
 
     def __init__(self, channel):
@@ -54,7 +54,7 @@ class NVMfRemoteControllerServiceStub(object):
 
 
 class NVMfRemoteControllerServiceServicer(object):
-    """Back End (network-facing) APIs. Nvme/TCP and Nvme/RoCEv2 protocols are covered by this service.
+    """Back End (network-facing) APIs. NVMe/TCP and NVMe/RoCEv2 protocols are covered by this service.
     """
 
     def CreateNVMfRemoteController(self, request, context):
@@ -145,7 +145,7 @@ def add_NVMfRemoteControllerServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class NVMfRemoteControllerService(object):
-    """Back End (network-facing) APIs. Nvme/TCP and Nvme/RoCEv2 protocols are covered by this service.
+    """Back End (network-facing) APIs. NVMe/TCP and NVMe/RoCEv2 protocols are covered by this service.
     """
 
     @staticmethod
