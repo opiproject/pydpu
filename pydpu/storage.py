@@ -4,6 +4,7 @@
 import uuid
 
 import grpc
+from google.protobuf import field_mask_pb2
 
 from .proto.v1 import (
     frontend_nvme_pcie_pb2,
@@ -56,7 +57,7 @@ class NvmeSubsystem:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.UpdateNvmeSubsystem(
                 request=frontend_nvme_pcie_pb2.UpdateNvmeSubsystemRequest(
-                    nvme_subsystem_id=str(self.id),
+                    update_mask=field_mask_pb2.FieldMask(paths=["*"]),
                     nvme_subsystem=frontend_nvme_pcie_pb2.NvmeSubsystem(
                         spec=frontend_nvme_pcie_pb2.NvmeSubsystemSpec(
                             model_number=self.model,
@@ -153,7 +154,7 @@ class NvmeController:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.UpdateNvmeController(
                 request=frontend_nvme_pcie_pb2.UpdateNvmeControllerRequest(
-                    nvme_controller_id=str(self.id),
+                    update_mask=field_mask_pb2.FieldMask(paths=["*"]),
                     nvme_controller=frontend_nvme_pcie_pb2.NvmeController(
                         spec=frontend_nvme_pcie_pb2.NvmeControllerSpec(
                             subsystem_id=object_key_pb2.ObjectKey(
@@ -258,7 +259,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.UpdateNvmeNamespace(
                 request=frontend_nvme_pcie_pb2.UpdateNvmeNamespaceRequest(
-                    nvme_namespace_id=str(self.id),
+                    update_mask=field_mask_pb2.FieldMask(paths=["*"]),
                     nvme_namespace=frontend_nvme_pcie_pb2.NvmeNamespace(
                         spec=frontend_nvme_pcie_pb2.NvmeNamespaceSpec(
                             subsystem_id=object_key_pb2.ObjectKey(
