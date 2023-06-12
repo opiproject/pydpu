@@ -84,6 +84,7 @@ def list(ctx, **kwargs):
         click.echo(res)
     except grpc.RpcError as e:
         print(e)
+        # raise
 
 
 @storage.command()
@@ -97,8 +98,19 @@ def subsystem(ctx, **kwargs):
         click.echo(s)
         res = s.create(ctx.obj["ADDRESS"])
         click.echo(res)
+        # res = s.update(ctx.obj["ADDRESS"])
+        # click.echo(res)
+        res = s.list(ctx.obj["ADDRESS"])
+        click.echo(res)
+        res = s.get(ctx.obj["ADDRESS"])
+        click.echo(res)
+        res = s.stats(ctx.obj["ADDRESS"])
+        click.echo(res)
+        res = s.delete(ctx.obj["ADDRESS"])
+        click.echo(res)
     except grpc.RpcError as e:
         print(e)
+        # raise
 
 
 @storage.command()
@@ -116,6 +128,7 @@ def controller(ctx, **kwargs):
         click.echo(res)
     except grpc.RpcError as e:
         click.echo(e)
+        # raise
 
 
 @storage.command()
@@ -133,6 +146,7 @@ def namespace(ctx, **kwargs):
         click.echo(res)
     except grpc.RpcError as e:
         click.echo(e)
+        # raise
 
 
 if __name__ == "__main__":
