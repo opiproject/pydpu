@@ -47,7 +47,7 @@ services:
   server:
     image: docker.io/opiproject/opi-spdk-bridge:main
     volumes_from:
-      - spdk:rw
+      - spdk
     networks:
       - opi
     depends_on:
