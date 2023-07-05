@@ -6,6 +6,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat)](https://github.com/psf/black)
 [![codecov](https://codecov.io/gh/opiproject/pydpu/branch/main/graph/badge.svg)](https://codecov.io/gh/opiproject/pydpu)
 [![Linters](https://github.com/opiproject/pydpu/actions/workflows/linters.yml/badge.svg)](https://github.com/opiproject/pydpu/actions/workflows/linters.yml)
+[![CodeQL](https://github.com/opiproject/pydpu/actions/workflows/codeql.yml/badge.svg)](https://github.com/opiproject/pydpu/actions/workflows/codeql.yml)
 [![Docker](https://github.com/opiproject/pydpu/actions/workflows/docker.yaml/badge.svg)](https://github.com/opiproject/pydpu/actions/workflows/docker.yaml)
 [![Tests](https://github.com/opiproject/pydpu/actions/workflows/test.yaml/badge.svg)](https://github.com/opiproject/pydpu/actions/workflows/test.yaml)
 [![GitHub stars](https://img.shields.io/github/stars/opiproject/pydpu.svg?style=flat-square&label=github%20stars)](https://github.com/opiproject/pydpu)
