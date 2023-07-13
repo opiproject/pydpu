@@ -88,3 +88,4 @@ proto: clean ## auto-generate protocol buffers
 	cp /tmp/opi-api/security/v1/gen/python/*.py ./pydpu/proto/v1/
 	cp /tmp/opi-api/storage/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
 	cp /tmp/opi-api/network/cloud/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
+	cp /tmp/opi-api/network/evpn-gw/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
