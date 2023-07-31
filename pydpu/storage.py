@@ -105,7 +105,7 @@ class NvmeSubsystem:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.NvmeSubsystemStats(
                 request=frontend_nvme_pcie_pb2.NvmeSubsystemStatsRequest(
-                    subsystem_id=object_key_pb2.ObjectKey(value=self.fullname)
+                    subsystem_name_ref=self.fullname,
                 )
             )
             return res
@@ -135,9 +135,7 @@ class NvmeController:
                     nvme_controller_id=str(self.id),
                     nvme_controller=frontend_nvme_pcie_pb2.NvmeController(
                         spec=frontend_nvme_pcie_pb2.NvmeControllerSpec(
-                            subsystem_id=object_key_pb2.ObjectKey(
-                                value=str(self.subsystem.id)
-                            ),
+                            subsystem_name_ref=str(self.subsystem.id),
                             pcie_id=opicommon_pb2.PciEndpoint(
                                 physical_function=1, virtual_function=2, port_id=3
                             ),
@@ -161,9 +159,7 @@ class NvmeController:
                     nvme_controller=frontend_nvme_pcie_pb2.NvmeController(
                         name=self.fullname,
                         spec=frontend_nvme_pcie_pb2.NvmeControllerSpec(
-                            subsystem_id=object_key_pb2.ObjectKey(
-                                value=str(self.subsystem.id)
-                            ),
+                            subsystem_name_ref=str(self.subsystem.id),
                             pcie_id=opicommon_pb2.PciEndpoint(
                                 physical_function=1, virtual_function=2, port_id=3
                             ),
@@ -243,10 +239,8 @@ class NvmeNamespace:
                     nvme_namespace_id=str(self.id),
                     nvme_namespace=frontend_nvme_pcie_pb2.NvmeNamespace(
                         spec=frontend_nvme_pcie_pb2.NvmeNamespaceSpec(
-                            subsystem_id=object_key_pb2.ObjectKey(
-                                value=str(self.subsystem.id)
-                            ),
-                            volume_id=object_key_pb2.ObjectKey(value=self.volume),
+                            subsystem_name_ref=str(self.subsystem.id),
+                            volume_name_ref=self.volume,
                             uuid=uuid_pb2.Uuid(
                                 value="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb"
                             ),
@@ -268,10 +262,8 @@ class NvmeNamespace:
                     nvme_namespace=frontend_nvme_pcie_pb2.NvmeNamespace(
                         name=self.fullname,
                         spec=frontend_nvme_pcie_pb2.NvmeNamespaceSpec(
-                            subsystem_id=object_key_pb2.ObjectKey(
-                                value=str(self.subsystem.id)
-                            ),
-                            volume_id=object_key_pb2.ObjectKey(value="Malloc1"),
+                            subsystem_name_ref=str(self.subsystem.id),
+                            volume_name_ref="Malloc1",
                             uuid=uuid_pb2.Uuid(
                                 value="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb"
                             ),
