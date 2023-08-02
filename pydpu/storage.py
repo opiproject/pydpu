@@ -9,7 +9,6 @@ from google.protobuf import field_mask_pb2
 from .proto.v1 import (
     frontend_nvme_pcie_pb2,
     frontend_nvme_pcie_pb2_grpc,
-    object_key_pb2,
     opicommon_pb2,
     uuid_pb2,
 )
@@ -103,9 +102,9 @@ class NvmeSubsystem:
     def stats(self, address):
         with grpc.insecure_channel(address) as channel:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
-            res = stub.NvmeSubsystemStats(
-                request=frontend_nvme_pcie_pb2.NvmeSubsystemStatsRequest(
-                    subsystem_name_ref=self.fullname,
+            res = stub.StatsNvmeSubsystem(
+                request=frontend_nvme_pcie_pb2.StatsNvmeSubsystemRequest(
+                    name=self.fullname,
                 )
             )
             return res
@@ -207,9 +206,9 @@ class NvmeController:
     def stats(self, address):
         with grpc.insecure_channel(address) as channel:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
-            res = stub.NvmeControllerStats(
-                request=frontend_nvme_pcie_pb2.NvmeControllerStatsRequest(
-                    id=object_key_pb2.ObjectKey(value=self.fullname)
+            res = stub.StatsNvmeController(
+                request=frontend_nvme_pcie_pb2.StatsNvmeControllerRequest(
+                    name=self.fullname,
                 )
             )
             return res
@@ -309,9 +308,9 @@ class NvmeNamespace:
     def stats(self, address):
         with grpc.insecure_channel(address) as channel:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
-            res = stub.NvmeNamespaceStats(
-                request=frontend_nvme_pcie_pb2.NvmeNamespaceStatsRequest(
-                    namespace_id=object_key_pb2.ObjectKey(value=self.fullname)
+            res = stub.StatsNvmeNamespace(
+                request=frontend_nvme_pcie_pb2.StatsNvmeNamespaceRequest(
+                    name=self.fullname,
                 )
             )
             return res
