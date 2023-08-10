@@ -4,7 +4,7 @@
 import uuid
 
 import grpc
-from google.protobuf import field_mask_pb2
+from google.protobuf import field_mask_pb2, wrappers_pb2
 
 from .proto.v1 import (
     frontend_nvme_pcie_pb2,
@@ -136,7 +136,9 @@ class NvmeController:
                         spec=frontend_nvme_pcie_pb2.NvmeControllerSpec(
                             subsystem_name_ref=str(self.subsystem.id),
                             pcie_id=opicommon_pb2.PciEndpoint(
-                                physical_function=1, virtual_function=2, port_id=3
+                                physical_function=wrappers_pb2.Int32Value(value=1),
+                                virtual_function=wrappers_pb2.Int32Value(value=2),
+                                port_id=wrappers_pb2.Int32Value(value=3),
                             ),
                             max_nsq=5,
                             max_ncq=6,
