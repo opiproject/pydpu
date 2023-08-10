@@ -84,8 +84,8 @@ proto: clean ## auto-generate protocol buffers
 	cd "/tmp/opi-api/storage" && $(MAKE)
 	cd "/tmp/opi-api/network/cloud" && $(MAKE)
 	cd $(git rev-parse --show-toplevel)
-	cp /tmp/opi-api/common/v1/gen/python/*.py ./pydpu/proto/v1/
-	cp /tmp/opi-api/security/v1/gen/python/*.py ./pydpu/proto/v1/
-	cp /tmp/opi-api/storage/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
-	cp /tmp/opi-api/network/cloud/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
-	cp /tmp/opi-api/network/evpn-gw/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
+	rsync --exclude=__*.py /tmp/opi-api/common/v1/gen/python/*.py ./pydpu/proto/v1/
+	rsync --exclude=__*.py /tmp/opi-api/security/v1/gen/python/*.py ./pydpu/proto/v1/
+	rsync --exclude=__*.py /tmp/opi-api/storage/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
+	rsync --exclude=__*.py /tmp/opi-api/network/cloud/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
+	rsync --exclude=__*.py /tmp/opi-api/network/evpn-gw/v1alpha1/gen/python/*.py ./pydpu/proto/v1/
