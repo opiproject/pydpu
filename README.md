@@ -102,13 +102,13 @@ pydpu --address=localhost:50151 storage namespace
 
 ### Evpn
 
-To create a Llogical bridge, run:
+To create a logical bridge, run:
 
 ```sh
 pydpu --address=localhost:50151 evpn bridge
 ```
 
-To create a Bbridge port, run:
+To create a bridge port, run:
 
 ```sh
 pydpu --address=localhost:50151 evpn port
@@ -123,7 +123,7 @@ pydpu --address=localhost:50151 evpn vrf
 To create a svi, run:
 
 ```sh
-pydpu --address=localhost:50151 evpn cvi
+pydpu --address=localhost:50151 evpn svi
 ```
 
 ## Packaging
