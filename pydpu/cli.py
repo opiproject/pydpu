@@ -2,7 +2,7 @@
 import click
 import grpc
 
-from .evpn import evpn_configure
+from .evpn import bridge_create, port_create, svi_create, vrf_create
 from .inventory import get_inventory
 from .ipsec import create_new_tunnel, get_stats
 from .storage import NvmeController, NvmeNamespace, NvmeSubsystem
@@ -40,8 +40,29 @@ def evpn(ctx):
 
 @evpn.command()
 @click.pass_context
-def iface(ctx):
-    evpn_configure(ctx.obj["ADDRESS"])
+def bridge(ctx):
+    bridge_create(ctx.obj["ADDRESS"])
+    click.echo("work in progress")
+
+
+@evpn.command()
+@click.pass_context
+def port(ctx):
+    port_create(ctx.obj["ADDRESS"])
+    click.echo("work in progress")
+
+
+@evpn.command()
+@click.pass_context
+def vrf(ctx):
+    vrf_create(ctx.obj["ADDRESS"])
+    click.echo("work in progress")
+
+
+@evpn.command()
+@click.pass_context
+def svi(ctx):
+    svi_create(ctx.obj["ADDRESS"])
     click.echo("work in progress")
 
 

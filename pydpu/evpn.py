@@ -3,19 +3,53 @@
 
 import grpc
 
-from .proto.v1 import (  # , interface_pb2, interface_pb2_grpc
-    cloudrpc_pb2,
-    cloudrpc_pb2_grpc,
+from .proto.v1 import (
+    l2_xpu_infra_mgr_pb2,
+    l2_xpu_infra_mgr_pb2_grpc,
+    l3_xpu_infra_mgr_pb2,
+    l3_xpu_infra_mgr_pb2_grpc,
 )
 
-# TODO: replace interface with evpn
 
-
-def evpn_configure(address):
+def bridge_create(address):
     try:
         with grpc.insecure_channel(address) as channel:
-            stub = cloudrpc_pb2_grpc.CloudInfraServiceStub(channel)
-            res = stub.CreateInterface(request=cloudrpc_pb2.CreateInterfaceRequest())
+            stub = l2_xpu_infra_mgr_pb2_grpc.LogicalBridgeServiceStub(channel)
+            res = stub.CreateLogicalBridge(
+                request=l2_xpu_infra_mgr_pb2.CreateLogicalBridgeRequest()
+            )
+            return res
+    except grpc.RpcError as e:
+        print(e)
+
+
+def port_create(address):
+    try:
+        with grpc.insecure_channel(address) as channel:
+            stub = l2_xpu_infra_mgr_pb2_grpc.BridgePortServiceStub(channel)
+            res = stub.CreateBridgePort(
+                request=l2_xpu_infra_mgr_pb2.CreateBridgePortRequest()
+            )
+            return res
+    except grpc.RpcError as e:
+        print(e)
+
+
+def vrf_create(address):
+    try:
+        with grpc.insecure_channel(address) as channel:
+            stub = l3_xpu_infra_mgr_pb2_grpc.VrfServiceStub(channel)
+            res = stub.CreateVrf(request=l3_xpu_infra_mgr_pb2.CreateVrfRequest())
+            return res
+    except grpc.RpcError as e:
+        print(e)
+
+
+def svi_create(address):
+    try:
+        with grpc.insecure_channel(address) as channel:
+            stub = l3_xpu_infra_mgr_pb2_grpc.SviServiceStub(channel)
+            res = stub.CreateSvi(request=l3_xpu_infra_mgr_pb2.CreateSviRequest())
             return res
     except grpc.RpcError as e:
         print(e)
