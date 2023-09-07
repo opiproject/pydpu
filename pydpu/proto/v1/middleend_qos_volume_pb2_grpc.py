@@ -7,7 +7,8 @@ import middleend_qos_volume_pb2 as middleend__qos__volume__pb2
 
 
 class MiddleendQosVolumeServiceStub(object):
-    """Missing associated documentation comment in .proto file."""
+    """Middle End (Storage Services) APIs. For example, encryption, compression, raid, QoS, multipath, ...
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -48,40 +49,47 @@ class MiddleendQosVolumeServiceStub(object):
 
 
 class MiddleendQosVolumeServiceServicer(object):
-    """Missing associated documentation comment in .proto file."""
+    """Middle End (Storage Services) APIs. For example, encryption, compression, raid, QoS, multipath, ...
+    """
 
     def CreateQosVolume(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Create an Qos Volume
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def DeleteQosVolume(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Delete an Qos Volume
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateQosVolume(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Update an Qos Volume
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListQosVolumes(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """List Qos Volumes
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetQosVolume(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get an Qos Volume
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def StatsQosVolume(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get an Qos Volume statistics
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -127,7 +135,8 @@ def add_MiddleendQosVolumeServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class MiddleendQosVolumeService(object):
-    """Missing associated documentation comment in .proto file."""
+    """Middle End (Storage Services) APIs. For example, encryption, compression, raid, QoS, multipath, ...
+    """
 
     @staticmethod
     def CreateQosVolume(request,
