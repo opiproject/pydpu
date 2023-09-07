@@ -56,6 +56,11 @@ class NvmeRemoteControllerServiceStub(object):
                 request_serializer=backend__nvme__tcp__pb2.ListNvmeRemoteNamespacesRequest.SerializeToString,
                 response_deserializer=backend__nvme__tcp__pb2.ListNvmeRemoteNamespacesResponse.FromString,
                 )
+        self.GetNvmeRemoteNamespace = channel.unary_unary(
+                '/opi_api.storage.v1.NvmeRemoteControllerService/GetNvmeRemoteNamespace',
+                request_serializer=backend__nvme__tcp__pb2.GetNvmeRemoteNamespaceRequest.SerializeToString,
+                response_deserializer=backend__nvme__tcp__pb2.NvmeRemoteNamespace.FromString,
+                )
         self.CreateNvmePath = channel.unary_unary(
                 '/opi_api.storage.v1.NvmeRemoteControllerService/CreateNvmePath',
                 request_serializer=backend__nvme__tcp__pb2.CreateNvmePathRequest.SerializeToString,
@@ -93,85 +98,106 @@ class NvmeRemoteControllerServiceServicer(object):
     """
 
     def CreateNvmeRemoteController(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Create an Nvme Remote Controller
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def DeleteNvmeRemoteController(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Delete an Nvme Remote Controller
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateNvmeRemoteController(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Update an Nvme Remote Controller
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListNvmeRemoteControllers(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """List Nvme Remote Controllers
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetNvmeRemoteController(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get an Nvme Remote Controller
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ResetNvmeRemoteController(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Reset an Nvme Remote Controller
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def StatsNvmeRemoteController(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get an Nvme Remote Controller statistics
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListNvmeRemoteNamespaces(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """List Nvme Remote Namespaces
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetNvmeRemoteNamespace(self, request, context):
+        """Get an Nvme Remote Namespace
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def CreateNvmePath(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Create an Nvme Path
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def DeleteNvmePath(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Delete an Nvme Path
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def UpdateNvmePath(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Update an Nvme Path
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ListNvmePaths(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """List Nvme Paths
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetNvmePath(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get an Nvme Path
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def StatsNvmePath(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get an Nvme Path statistics
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -218,6 +244,11 @@ def add_NvmeRemoteControllerServiceServicer_to_server(servicer, server):
                     servicer.ListNvmeRemoteNamespaces,
                     request_deserializer=backend__nvme__tcp__pb2.ListNvmeRemoteNamespacesRequest.FromString,
                     response_serializer=backend__nvme__tcp__pb2.ListNvmeRemoteNamespacesResponse.SerializeToString,
+            ),
+            'GetNvmeRemoteNamespace': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetNvmeRemoteNamespace,
+                    request_deserializer=backend__nvme__tcp__pb2.GetNvmeRemoteNamespaceRequest.FromString,
+                    response_serializer=backend__nvme__tcp__pb2.NvmeRemoteNamespace.SerializeToString,
             ),
             'CreateNvmePath': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateNvmePath,
@@ -393,6 +424,23 @@ class NvmeRemoteControllerService(object):
         return grpc.experimental.unary_unary(request, target, '/opi_api.storage.v1.NvmeRemoteControllerService/ListNvmeRemoteNamespaces',
             backend__nvme__tcp__pb2.ListNvmeRemoteNamespacesRequest.SerializeToString,
             backend__nvme__tcp__pb2.ListNvmeRemoteNamespacesResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetNvmeRemoteNamespace(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/opi_api.storage.v1.NvmeRemoteControllerService/GetNvmeRemoteNamespace',
+            backend__nvme__tcp__pb2.GetNvmeRemoteNamespaceRequest.SerializeToString,
+            backend__nvme__tcp__pb2.NvmeRemoteNamespace.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
