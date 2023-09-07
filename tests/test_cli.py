@@ -26,9 +26,27 @@ def test_cli_inventory_get(runner):
     assert result.exit_code == 0
 
 
-def test_cli_evpn_iface(runner):
+def test_cli_evpn_bridge(runner):
     """Test `dpu evpn interface`"""
-    result = runner.invoke(cli.main, ("--address", "localhost:50001", "evpn", "iface"))
+    result = runner.invoke(cli.main, ("--address", "localhost:50001", "evpn", "bridge"))
+    assert result.exit_code == 0
+
+
+def test_cli_evpn_port(runner):
+    """Test `dpu evpn interface`"""
+    result = runner.invoke(cli.main, ("--address", "localhost:50001", "evpn", "port"))
+    assert result.exit_code == 0
+
+
+def test_cli_evpn_vrf(runner):
+    """Test `dpu evpn interface`"""
+    result = runner.invoke(cli.main, ("--address", "localhost:50001", "evpn", "vrf"))
+    assert result.exit_code == 0
+
+
+def test_cli_evpn_svi(runner):
+    """Test `dpu evpn interface`"""
+    result = runner.invoke(cli.main, ("--address", "localhost:50001", "evpn", "svi"))
     assert result.exit_code == 0
 
 
