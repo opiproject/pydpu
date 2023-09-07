@@ -100,6 +100,32 @@ To create a namespace, run:
 pydpu --address=localhost:50151 storage namespace
 ```
 
+### Evpn
+
+To create a Llogical bridge, run:
+
+```sh
+pydpu --address=localhost:50151 evpn bridge
+```
+
+To create a Bbridge port, run:
+
+```sh
+pydpu --address=localhost:50151 evpn port
+```
+
+To create a vrf, run:
+
+```sh
+pydpu --address=localhost:50151 evpn vrf
+```
+
+To create a svi, run:
+
+```sh
+pydpu --address=localhost:50151 evpn cvi
+```
+
 ## Packaging
 
 This project uses [poetry](https://python-poetry.org/) to manage dependencies, build, etc.
