@@ -33,4 +33,3 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: azohra/shell-linter@v0.6.0
-
