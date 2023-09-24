@@ -1,0 +1,13 @@
+name: Python
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  call:
+    uses: opiproject/actions/.github/workflows/python.yaml@main
+    secrets: inherit
