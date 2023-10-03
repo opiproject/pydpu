@@ -28,7 +28,7 @@ class NvmeSubsystem:
 
     def __init__(self, nqn: str, model="OPI Model", serial="OPI SN", ns=10) -> None:
         self.id = "opi-" + str(uuid.uuid1())
-        self.fullname = "//storage.opiproject.org/volumes/" + str(self.id)
+        self.fullname = "//storage.opiproject.org/subsystems/" + str(self.id)
         self.nqn = nqn
         self.model = model
         self.serial = serial
@@ -75,7 +75,7 @@ class NvmeSubsystem:
         with grpc.insecure_channel(address) as channel:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.ListNvmeSubsystems(
-                request=frontend_nvme_pcie_pb2.ListNvmeSubsystemsRequest(parent="todo")
+                request=frontend_nvme_pcie_pb2.ListNvmeSubsystemsRequest()
             )
             return res
 
@@ -122,7 +122,9 @@ class NvmeController:
 
     def __init__(self, subsystem: NvmeSubsystem, queue: int) -> None:
         self.id = "opi-" + str(uuid.uuid1())
-        self.fullname = "//storage.opiproject.org/volumes/" + str(self.id)
+        self.fullname = "//storage.opiproject.org/subsystems/{}/controllers{}".format(
+            subsystem.id, self.id
+        )
         self.subsystem = subsystem
         self.queue = queue
 
@@ -131,10 +133,10 @@ class NvmeController:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNvmeController(
                 request=frontend_nvme_pcie_pb2.CreateNvmeControllerRequest(
+                    parent=str(self.subsystem.id),
                     nvme_controller_id=str(self.id),
                     nvme_controller=frontend_nvme_pcie_pb2.NvmeController(
                         spec=frontend_nvme_pcie_pb2.NvmeControllerSpec(
-                            subsystem_name_ref=str(self.subsystem.id),
                             pcie_id=opicommon_pb2.PciEndpoint(
                                 physical_function=wrappers_pb2.Int32Value(value=1),
                                 virtual_function=wrappers_pb2.Int32Value(value=2),
@@ -160,7 +162,6 @@ class NvmeController:
                     nvme_controller=frontend_nvme_pcie_pb2.NvmeController(
                         name=self.fullname,
                         spec=frontend_nvme_pcie_pb2.NvmeControllerSpec(
-                            subsystem_name_ref=str(self.subsystem.id),
                             pcie_id=opicommon_pb2.PciEndpoint(
                                 physical_function=1, virtual_function=2, port_id=3
                             ),
@@ -228,7 +229,9 @@ class NvmeNamespace:
 
     def __init__(self, subsystem: NvmeSubsystem, volume: str) -> None:
         self.id = "opi-" + str(uuid.uuid1())
-        self.fullname = "//storage.opiproject.org/volumes/" + str(self.id)
+        self.fullname = "//storage.opiproject.org/subsystems/{}/namespaces{}".format(
+            subsystem.id, self.id
+        )
         self.subsystem = subsystem
         self.volume = volume
 
@@ -237,10 +240,10 @@ class NvmeNamespace:
             stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNvmeNamespace(
                 request=frontend_nvme_pcie_pb2.CreateNvmeNamespaceRequest(
+                    parent=str(self.subsystem.id),
                     nvme_namespace_id=str(self.id),
                     nvme_namespace=frontend_nvme_pcie_pb2.NvmeNamespace(
                         spec=frontend_nvme_pcie_pb2.NvmeNamespaceSpec(
-                            subsystem_name_ref=str(self.subsystem.id),
                             volume_name_ref=self.volume,
                             uuid=uuid_pb2.Uuid(
                                 value="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb"
@@ -263,7 +266,6 @@ class NvmeNamespace:
                     nvme_namespace=frontend_nvme_pcie_pb2.NvmeNamespace(
                         name=self.fullname,
                         spec=frontend_nvme_pcie_pb2.NvmeNamespaceSpec(
-                            subsystem_name_ref=str(self.subsystem.id),
                             volume_name_ref="Malloc1",
                             uuid=uuid_pb2.Uuid(
                                 value="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb"
