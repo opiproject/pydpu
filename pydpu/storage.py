@@ -6,12 +6,7 @@ import uuid
 import grpc
 from google.protobuf import field_mask_pb2, wrappers_pb2
 
-from .proto.v1 import (
-    frontend_nvme_pcie_pb2,
-    frontend_nvme_pcie_pb2_grpc,
-    opicommon_pb2,
-    uuid_pb2,
-)
+from .proto.v1 import frontend_nvme_pb2, frontend_nvme_pb2_grpc, opicommon_pb2, uuid_pb2
 
 
 class NvmeSubsystem:
@@ -36,12 +31,12 @@ class NvmeSubsystem:
 
     def create(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNvmeSubsystem(
-                request=frontend_nvme_pcie_pb2.CreateNvmeSubsystemRequest(
+                request=frontend_nvme_pb2.CreateNvmeSubsystemRequest(
                     nvme_subsystem_id=str(self.id),
-                    nvme_subsystem=frontend_nvme_pcie_pb2.NvmeSubsystem(
-                        spec=frontend_nvme_pcie_pb2.NvmeSubsystemSpec(
+                    nvme_subsystem=frontend_nvme_pb2.NvmeSubsystem(
+                        spec=frontend_nvme_pb2.NvmeSubsystemSpec(
                             model_number=self.model,
                             serial_number=self.serial,
                             max_namespaces=self.ns,
@@ -54,13 +49,13 @@ class NvmeSubsystem:
 
     def update(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.UpdateNvmeSubsystem(
-                request=frontend_nvme_pcie_pb2.UpdateNvmeSubsystemRequest(
+                request=frontend_nvme_pb2.UpdateNvmeSubsystemRequest(
                     update_mask=field_mask_pb2.FieldMask(paths=["*"]),
-                    nvme_subsystem=frontend_nvme_pcie_pb2.NvmeSubsystem(
+                    nvme_subsystem=frontend_nvme_pb2.NvmeSubsystem(
                         name=self.fullname,
-                        spec=frontend_nvme_pcie_pb2.NvmeSubsystemSpec(
+                        spec=frontend_nvme_pb2.NvmeSubsystemSpec(
                             model_number=self.model,
                             serial_number=self.serial,
                             max_namespaces=self.ns,
@@ -73,17 +68,17 @@ class NvmeSubsystem:
 
     def list(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.ListNvmeSubsystems(
-                request=frontend_nvme_pcie_pb2.ListNvmeSubsystemsRequest()
+                request=frontend_nvme_pb2.ListNvmeSubsystemsRequest()
             )
             return res
 
     def delete(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.DeleteNvmeSubsystem(
-                request=frontend_nvme_pcie_pb2.DeleteNvmeSubsystemRequest(
+                request=frontend_nvme_pb2.DeleteNvmeSubsystemRequest(
                     name=self.fullname,
                 )
             )
@@ -91,9 +86,9 @@ class NvmeSubsystem:
 
     def get(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.GetNvmeSubsystem(
-                request=frontend_nvme_pcie_pb2.GetNvmeSubsystemRequest(
+                request=frontend_nvme_pb2.GetNvmeSubsystemRequest(
                     name=self.fullname,
                 )
             )
@@ -101,9 +96,9 @@ class NvmeSubsystem:
 
     def stats(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.StatsNvmeSubsystem(
-                request=frontend_nvme_pcie_pb2.StatsNvmeSubsystemRequest(
+                request=frontend_nvme_pb2.StatsNvmeSubsystemRequest(
                     name=self.fullname,
                 )
             )
@@ -130,13 +125,13 @@ class NvmeController:
 
     def create(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNvmeController(
-                request=frontend_nvme_pcie_pb2.CreateNvmeControllerRequest(
+                request=frontend_nvme_pb2.CreateNvmeControllerRequest(
                     parent=str(self.subsystem.id),
                     nvme_controller_id=str(self.id),
-                    nvme_controller=frontend_nvme_pcie_pb2.NvmeController(
-                        spec=frontend_nvme_pcie_pb2.NvmeControllerSpec(
+                    nvme_controller=frontend_nvme_pb2.NvmeController(
+                        spec=frontend_nvme_pb2.NvmeControllerSpec(
                             pcie_id=opicommon_pb2.PciEndpoint(
                                 physical_function=wrappers_pb2.Int32Value(value=1),
                                 virtual_function=wrappers_pb2.Int32Value(value=2),
@@ -155,13 +150,13 @@ class NvmeController:
 
     def update(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.UpdateNvmeController(
-                request=frontend_nvme_pcie_pb2.UpdateNvmeControllerRequest(
+                request=frontend_nvme_pb2.UpdateNvmeControllerRequest(
                     update_mask=field_mask_pb2.FieldMask(paths=["*"]),
-                    nvme_controller=frontend_nvme_pcie_pb2.NvmeController(
+                    nvme_controller=frontend_nvme_pb2.NvmeController(
                         name=self.fullname,
-                        spec=frontend_nvme_pcie_pb2.NvmeControllerSpec(
+                        spec=frontend_nvme_pb2.NvmeControllerSpec(
                             pcie_id=opicommon_pb2.PciEndpoint(
                                 physical_function=1, virtual_function=2, port_id=3
                             ),
@@ -178,9 +173,9 @@ class NvmeController:
 
     def list(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.ListNvmeControllers(
-                request=frontend_nvme_pcie_pb2.ListNvmeControllersRequest(
+                request=frontend_nvme_pb2.ListNvmeControllersRequest(
                     parent=str(self.subsystem.id)
                 )
             )
@@ -188,9 +183,9 @@ class NvmeController:
 
     def delete(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.DeleteNvmeController(
-                request=frontend_nvme_pcie_pb2.DeleteNvmeControllerRequest(
+                request=frontend_nvme_pb2.DeleteNvmeControllerRequest(
                     name=self.fullname,
                 )
             )
@@ -198,9 +193,9 @@ class NvmeController:
 
     def get(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.GetNvmeController(
-                request=frontend_nvme_pcie_pb2.GetNvmeControllerRequest(
+                request=frontend_nvme_pb2.GetNvmeControllerRequest(
                     name=self.fullname,
                 )
             )
@@ -208,9 +203,9 @@ class NvmeController:
 
     def stats(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.StatsNvmeController(
-                request=frontend_nvme_pcie_pb2.StatsNvmeControllerRequest(
+                request=frontend_nvme_pb2.StatsNvmeControllerRequest(
                     name=self.fullname,
                 )
             )
@@ -237,13 +232,13 @@ class NvmeNamespace:
 
     def create(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNvmeNamespace(
-                request=frontend_nvme_pcie_pb2.CreateNvmeNamespaceRequest(
+                request=frontend_nvme_pb2.CreateNvmeNamespaceRequest(
                     parent=str(self.subsystem.id),
                     nvme_namespace_id=str(self.id),
-                    nvme_namespace=frontend_nvme_pcie_pb2.NvmeNamespace(
-                        spec=frontend_nvme_pcie_pb2.NvmeNamespaceSpec(
+                    nvme_namespace=frontend_nvme_pb2.NvmeNamespace(
+                        spec=frontend_nvme_pb2.NvmeNamespaceSpec(
                             volume_name_ref=self.volume,
                             uuid=uuid_pb2.Uuid(
                                 value="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb"
@@ -259,13 +254,13 @@ class NvmeNamespace:
 
     def update(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.UpdateNvmeNamespace(
-                request=frontend_nvme_pcie_pb2.UpdateNvmeNamespaceRequest(
+                request=frontend_nvme_pb2.UpdateNvmeNamespaceRequest(
                     update_mask=field_mask_pb2.FieldMask(paths=["*"]),
-                    nvme_namespace=frontend_nvme_pcie_pb2.NvmeNamespace(
+                    nvme_namespace=frontend_nvme_pb2.NvmeNamespace(
                         name=self.fullname,
-                        spec=frontend_nvme_pcie_pb2.NvmeNamespaceSpec(
+                        spec=frontend_nvme_pb2.NvmeNamespaceSpec(
                             volume_name_ref="Malloc1",
                             uuid=uuid_pb2.Uuid(
                                 value="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb"
@@ -281,9 +276,9 @@ class NvmeNamespace:
 
     def list(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.ListNvmeNamespaces(
-                request=frontend_nvme_pcie_pb2.ListNvmeNamespacesRequest(
+                request=frontend_nvme_pb2.ListNvmeNamespacesRequest(
                     parent=str(self.subsystem.id)
                 )
             )
@@ -291,9 +286,9 @@ class NvmeNamespace:
 
     def delete(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.DeleteNvmeNamespace(
-                request=frontend_nvme_pcie_pb2.DeleteNvmeNamespaceRequest(
+                request=frontend_nvme_pb2.DeleteNvmeNamespaceRequest(
                     name=self.fullname,
                 )
             )
@@ -301,9 +296,9 @@ class NvmeNamespace:
 
     def get(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.GetNvmeNamespace(
-                request=frontend_nvme_pcie_pb2.GetNvmeNamespaceRequest(
+                request=frontend_nvme_pb2.GetNvmeNamespaceRequest(
                     name=self.fullname,
                 )
             )
@@ -311,9 +306,9 @@ class NvmeNamespace:
 
     def stats(self, address):
         with grpc.insecure_channel(address) as channel:
-            stub = frontend_nvme_pcie_pb2_grpc.FrontendNvmeServiceStub(channel)
+            stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.StatsNvmeNamespace(
-                request=frontend_nvme_pcie_pb2.StatsNvmeNamespaceRequest(
+                request=frontend_nvme_pb2.StatsNvmeNamespaceRequest(
                     name=self.fullname,
                 )
             )
