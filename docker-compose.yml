@@ -44,6 +44,24 @@ services:
       start_period: 20s
       timeout: 10s
 
+  redis:
+    image: redis:7.2.2-alpine3.18
+    networks:
+      - opi
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.50.0
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - opi
+
   server:
     image: docker.io/opiproject/opi-spdk-bridge:main
     volumes_from:
@@ -53,7 +71,11 @@ services:
     depends_on:
       spdk:
         condition: service_healthy
-    command: /opi-spdk-bridge -grpc_port=50051 -http_port=8082
+      redis:
+        condition: service_healthy
+      jaeger:
+        condition: service_started
+    command: /opi-spdk-bridge -grpc_port=50051 -http_port=8082 -redis_addr=redis:6379
     healthcheck:
       test: grpcurl -plaintext localhost:50051 list || exit 1
 
