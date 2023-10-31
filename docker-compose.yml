@@ -61,6 +61,16 @@ services:
       - COLLECTOR_OTLP_ENABLED=true
     networks:
       - opi
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "nc -zv localhost 4317 && nc -zv localhost 4318 || exit 1"
+        ]
+      interval: 6s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
 
   server:
     image: docker.io/opiproject/opi-spdk-bridge:main
@@ -74,7 +84,7 @@ services:
       redis:
         condition: service_healthy
       jaeger:
-        condition: service_started
+        condition: service_healthy
     command: /opi-spdk-bridge -grpc_port=50051 -http_port=8082 -redis_addr=redis:6379
     healthcheck:
       test: grpcurl -plaintext localhost:50051 list || exit 1
