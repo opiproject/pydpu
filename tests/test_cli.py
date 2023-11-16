@@ -58,10 +58,10 @@ def test_cli_ipsec_create_tunnel(runner):
     assert result.exit_code == 0
 
 
-def test_cli_storage_list(runner):
-    """Test `dpu storage list"""
+def test_cli_storage_show(runner):
+    """Test `dpu storage show"""
     result = runner.invoke(
-        cli.main, ("--address", "localhost:50003", "storage", "list")
+        cli.main, ("--address", "localhost:50003", "storage", "show")
     )
     assert result.exit_code == 0
 
