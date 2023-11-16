@@ -1,4 +1,5 @@
 import logging
+import os.path
 
 import redfish
 
@@ -14,8 +15,7 @@ class Managers:
         self._host = host
         self._user = user
         self._password = password
-        # TODO: find bmc name dynamically
-        self.bmc_name = "Bluefield_BMC"
+        self._bmc_name = None
         self.logger.info("Connecting to %s", host)
         self._session = redfish.redfish_client(
             base_url=self._host,
@@ -28,6 +28,19 @@ class Managers:
             **kwargs
         )
 
+    @property
+    def bmc_name(self):
+        self.logger.info("Getting System ID...")
+        if self._bmc_name is not None:
+            return self._bmc_name
+        managers = self._session.get("/redfish/v1/Managers").obj.Members
+        response = self._session.get(managers[0]["@odata.id"])
+        self.logger.debug("Getting System ID ({})...".format(response.obj.Id))
+        self._bmc_name = os.path.basename(managers[0]["@odata.id"])
+        # TODO: should use response.obj.Id, but doesn't work on all devices (bug)
+        # self._bmc_name = re.split(r"\d$", response.obj.Id)[0]
+        return self._bmc_name
+
     def get_bmc_datetime(self):
         self.logger.info("Getting BMC time...")
         # TODO: create decorator for login/logout
@@ -36,6 +49,30 @@ class Managers:
         self.logger.debug(response.text)
         self._session.logout()
         return response.dict.get("DateTime")
+
+    def set_bmc_datetime(self, datetime_string):
+        self.logger.info("Setting BMC time to {}".format(datetime_string))
+        # TODO: create decorator for login/logout
+        self._session.login(auth=redfish.AuthMethod.SESSION)
+        response = self._session.patch(
+            "/redfish/v1/Managers/{}".format(self.bmc_name),
+            body={"DateTime": datetime_string},
+        )
+        self.logger.debug(response.text)
+        self._session.logout()
+
+    def get_bmc_networks(self):
+        self.logger.info("Getting EthernetInterfaces")
+        url = "/redfish/v1/Managers/{}/EthernetInterfaces?$expand=.($levels=1)".format(
+            self.bmc_name
+        )
+        # TODO: create decorator for login/logout
+        self._session.login(auth=redfish.AuthMethod.SESSION)
+        response = self._session.get(url)
+        self.logger.debug(response.text)
+        self._session.logout()
+        for item in response.obj.Members:
+            yield item
 
     def get_event_log(self, log_type="Journal"):
         self.logger.info("Getting BMC logs of type {}...".format(log_type))
