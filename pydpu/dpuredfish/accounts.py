@@ -29,7 +29,7 @@ class AccountService:
     def get_accounts(self):
         self.logger.info("Getting Accounts...")
         # TODO: create decorator for login/logout
-        self._session.login(auth="session")
+        self._session.login(auth=redfish.AuthMethod.SESSION)
         response = self._session.get(
             "/redfish/v1/AccountService/Accounts?$expand=.($levels=1)"
         )

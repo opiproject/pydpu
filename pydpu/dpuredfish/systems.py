@@ -1,4 +1,5 @@
 import logging
+import re
 
 import redfish
 
@@ -14,8 +15,7 @@ class Systems:
         self._host = host
         self._user = user
         self._password = password
-        # TODO: find system name dynamically
-        self.system_name = "Bluefield"
+        self._system_name = None
         self.logger.info("Connecting to %s", host)
         self._session = redfish.redfish_client(
             base_url=self._host,
@@ -28,10 +28,21 @@ class Systems:
             **kwargs
         )
 
+    @property
+    def system_name(self):
+        self.logger.info("Getting System ID...")
+        if self._system_name is not None:
+            return self._system_name
+        systems = self._session.get("/redfish/v1/Systems").obj.Members
+        response = self._session.get(systems[0]["@odata.id"])
+        self.logger.debug("Getting System ID ({})...".format(response.obj.Id))
+        self._system_name = re.split(r"\d$", response.obj.Id)[0]
+        return self._system_name
+
     def get_processors(self):
         self.logger.info("Getting Processors")
         # TODO: create decorator for login/logout
-        self._session.login(auth="session")
+        self._session.login(auth=redfish.AuthMethod.SESSION)
         response = self._session.get(
             "/redfish/v1/Systems/{}/Processors?$expand=.($levels=1)".format(
                 self.system_name
@@ -45,7 +56,7 @@ class Systems:
     def get_storage(self):
         self.logger.info("Getting Storage ...")
         # TODO: create decorator for login/logout
-        self._session.login(auth="session")
+        self._session.login(auth=redfish.AuthMethod.SESSION)
         response = self._session.get(
             "/redfish/v1/Systems/{}/Storage?$expand=~($levels=1)".format(
                 self.system_name
@@ -58,7 +69,7 @@ class Systems:
     def get_memory(self):
         self.logger.info("Getting Memory")
         # TODO: create decorator for login/logout
-        self._session.login(auth="session")
+        self._session.login(auth=redfish.AuthMethod.SESSION)
         response = self._session.get(
             "/redfish/v1/Systems/{}/Memory?$expand=.($levels=1)".format(
                 self.system_name
@@ -72,7 +83,7 @@ class Systems:
     def get_networks(self):
         self.logger.info("Getting EthernetInterfaces")
         # TODO: create decorator for login/logout
-        self._session.login(auth="session")
+        self._session.login(auth=redfish.AuthMethod.SESSION)
         response = self._session.get(
             "/redfish/v1/Systems/{}/EthernetInterfaces?$expand=.($levels=1)".format(
                 self.system_name

@@ -31,7 +31,7 @@ class Managers:
     def get_bmc_datetime(self):
         self.logger.info("Getting BMC time...")
         # TODO: create decorator for login/logout
-        self._session.login(auth="session")
+        self._session.login(auth=redfish.AuthMethod.SESSION)
         response = self._session.get("/redfish/v1/Managers/{}".format(self.bmc_name))
         self.logger.debug(response.text)
         self._session.logout()
@@ -40,7 +40,7 @@ class Managers:
     def get_event_log(self, log_type="Journal"):
         self.logger.info("Getting BMC logs of type {}...".format(log_type))
         # TODO: create decorator for login/logout
-        self._session.login(auth="session")
+        self._session.login(auth=redfish.AuthMethod.SESSION)
         response = self._session.get(
             "/redfish/v1/Managers/{}/LogServices/{}/Entries".format(
                 self.bmc_name, log_type
