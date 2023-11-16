@@ -86,3 +86,34 @@ class Managers:
         self._session.logout()
         for entry in response.dict.get("Members"):
             yield entry
+
+    def factory_reset(self):
+        """
+        Reset the BMC to default settings.
+        """
+        self.logger.info("Reset BMC to defaults")
+        url = "/redfish/v1/Managers/{}/Actions/Manager.ResetToDefaults".format(
+            self.bmc_name
+        )
+        body = {"ResetType": "ResetAll"}
+        # TODO: create decorator for login/logout
+        self._session.login(auth=redfish.AuthMethod.SESSION)
+        response = self._session.post(url, body=body)
+        self.logger.debug(response.text)
+        self._session.logout()
+
+    def reset_bmc(self, reset_type="ForceRestart"):
+        """
+        Restart the BMC.
+        :param str reset_type: The type of reset to perform. Default is "ForceRestart".
+                                Valid options are:
+                               ForceOff, GracefulShutdown, GracefulRestart,
+                               ForceRestart, Nmi, ForceOn, PushPowerButton, PowerCycle.
+                               Note that above types valid according to redfish spec.
+                               In reality, managers may implement a subset of types,
+                               denoted by the ResetType@Redfish.AllowableValues field.
+        """
+        self.logger.info("Reset BMC")
+        body = {"ResetType": "ForceRestart"}
+        url = "/redfish/v1/Managers/{}/Actions/Manager.Reset".format(self.bmc_name)
+        self._session.post(url, body=body)
