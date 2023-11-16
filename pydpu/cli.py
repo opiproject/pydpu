@@ -2,7 +2,7 @@
 import click
 import grpc
 
-from .dpuredfish import accounts, managers, systems
+from .dpuredfish import accounts, certificates, managers, systems
 from .evpn import bridge_create, port_create, svi_create, vrf_create
 from .inventory import get_inventory
 from .ipsec import create_new_tunnel, get_stats
@@ -214,6 +214,10 @@ def test(ctx, **kwargs):
         ctx.obj["ADDRESS"], ctx.obj["USERNAME"], ctx.obj["PASSWORD"]
     )
     click.echo(list(a.get_accounts()))
+    c = certificates.CertificateService(
+        ctx.obj["ADDRESS"], ctx.obj["USERNAME"], ctx.obj["PASSWORD"]
+    )
+    click.echo(list(c.get_certificates()))
 
 
 if __name__ == "__main__":
