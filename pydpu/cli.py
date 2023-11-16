@@ -2,6 +2,7 @@
 import click
 import grpc
 
+from .dpuredfish import accounts, managers, systems
 from .evpn import bridge_create, port_create, svi_create, vrf_create
 from .inventory import get_inventory
 from .ipsec import create_new_tunnel, get_stats
@@ -94,7 +95,7 @@ def storage(ctx):
 
 @storage.command()
 @click.pass_context
-def list(ctx, **kwargs):
+def show(ctx, **kwargs):
     click.echo("work in progress")
     try:
         s = NvmeSubsystem(
@@ -188,6 +189,31 @@ def namespace(ctx, **kwargs):
     except grpc.RpcError as e:
         click.echo(e)
         # raise
+
+
+@main.group()
+@click.option("-u", "--username", default="root", help="DPU BMC redfish username")
+@click.option("-p", "--password", default="0penBmc", help="DPU BMC redfish password")
+@click.pass_context
+def redfish(ctx, username, password):
+    # ensure that ctx.obj exists and is a dict (in case `cli()` is called
+    # by means other than the `if` block below)
+    ctx.ensure_object(dict)
+    ctx.obj["USERNAME"] = username
+    ctx.obj["PASSWORD"] = password
+
+
+@redfish.command()
+@click.pass_context
+def test(ctx, **kwargs):
+    s = systems.Systems(ctx.obj["ADDRESS"], ctx.obj["USERNAME"], ctx.obj["PASSWORD"])
+    click.echo(list(s.get_processors()))
+    m = managers.Managers(ctx.obj["ADDRESS"], ctx.obj["USERNAME"], ctx.obj["PASSWORD"])
+    click.echo(m.get_bmc_datetime())
+    a = accounts.AccountService(
+        ctx.obj["ADDRESS"], ctx.obj["USERNAME"], ctx.obj["PASSWORD"]
+    )
+    click.echo(list(a.get_accounts()))
 
 
 if __name__ == "__main__":
