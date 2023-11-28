@@ -113,13 +113,29 @@ class NvmeController:
         pf:        physical_function of PciEndpoint.
         vf:        virtual_function of PciEndpoint.
         port:      port_id of PciEndpoint.
+        max_nsq:   maximum number of host submission queues allowed.
+                   For 0 the xPU will provide a default.
+        max_ncq:   maximum number of host completion queues allowed.
+                   For 0 the xPU will provide a default.
     """
 
     def __repr__(self) -> str:
-        return f"{type(self).__name__}({str(self.id)}, nqn={str(self.queue)}, port={str(self.port)}, pf={str(self.pf)}, vf={self.vf})"
+        return (
+            f"{type(self).__name__}({str(self.id)}, nqn={str(self.queue)}, "
+            + f"port={str(self.port)}, pf={str(self.pf)}, vf={self.vf}, "
+            + f"max_nsq={str(self.max_nsq)}, max_ncq={self.max_ncq})"
+        )
 
-    def __init__(self, subsystem: NvmeSubsystem, queue: int,
-                 pf: int, vf: int, port: int = 0) -> None:
+    def __init__(
+        self,
+        subsystem: NvmeSubsystem,
+        queue: int,
+        pf: int,
+        vf: int,
+        port: int = 0,
+        max_nsq: int = 0,
+        max_ncq: int = 0,
+    ) -> None:
         self.id = "opi-" + str(uuid.uuid1())
         self.fullname = "//storage.opiproject.org/subsystems/{}/controllers{}".format(
             subsystem.id, self.id
@@ -129,6 +145,8 @@ class NvmeController:
         self.pf = pf
         self.vf = vf
         self.port = port
+        self.max_nsq = max_nsq
+        self.max_ncq = max_ncq
 
     def create(self, address):
         with grpc.insecure_channel(address) as channel:
@@ -146,8 +164,8 @@ class NvmeController:
                                 virtual_function=wrappers_pb2.Int32Value(value=self.vf),
                                 port_id=wrappers_pb2.Int32Value(value=self.port),
                             ),
-                            max_nsq=5,
-                            max_ncq=6,
+                            max_nsq=self.max_nsq,
+                            max_ncq=self.max_ncq,
                             sqes=7,
                             cqes=8,
                             nvme_controller_id=1,
