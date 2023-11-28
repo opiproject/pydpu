@@ -128,7 +128,7 @@ class NvmeController:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNvmeController(
                 request=frontend_nvme_pb2.CreateNvmeControllerRequest(
-                    parent=str(self.subsystem.id),
+                    parent=str(self.subsystem.fullname),
                     nvme_controller_id=str(self.id),
                     nvme_controller=frontend_nvme_pb2.NvmeController(
                         spec=frontend_nvme_pb2.NvmeControllerSpec(
@@ -176,7 +176,7 @@ class NvmeController:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.ListNvmeControllers(
                 request=frontend_nvme_pb2.ListNvmeControllersRequest(
-                    parent=str(self.subsystem.id)
+                    parent=str(self.subsystem.fullname)
                 )
             )
             return res
@@ -235,7 +235,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNvmeNamespace(
                 request=frontend_nvme_pb2.CreateNvmeNamespaceRequest(
-                    parent=str(self.subsystem.id),
+                    parent=str(self.subsystem.fullname),
                     nvme_namespace_id=str(self.id),
                     nvme_namespace=frontend_nvme_pb2.NvmeNamespace(
                         spec=frontend_nvme_pb2.NvmeNamespaceSpec(
@@ -279,7 +279,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.ListNvmeNamespaces(
                 request=frontend_nvme_pb2.ListNvmeNamespacesRequest(
-                    parent=str(self.subsystem.id)
+                    parent=str(self.subsystem.fullname)
                 )
             )
             return res
