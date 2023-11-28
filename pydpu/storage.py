@@ -261,6 +261,7 @@ class NvmeNamespace:
                     nvme_namespace=frontend_nvme_pb2.NvmeNamespace(
                         name=self.fullname,
                         spec=frontend_nvme_pb2.NvmeNamespaceSpec(
+                            trtype=opicommon_pb2.NVME_TRANSPORT_PCIE,
                             volume_name_ref="Malloc1",
                             uuid=uuid_pb2.Uuid(
                                 value="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb"
