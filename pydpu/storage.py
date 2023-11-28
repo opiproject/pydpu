@@ -110,18 +110,25 @@ class NvmeController:
     Args:
         subsystem: substsem name that controller belongs to.
         queue:     queue depth for both SQ (submition) and CQ (completion).
+        pf:        physical_function of PciEndpoint.
+        vf:        virtual_function of PciEndpoint.
+        port:      port_id of PciEndpoint.
     """
 
     def __repr__(self) -> str:
-        return f"{type(self).__name__}({str(self.id)}, nqn={str(self.queue)})"
+        return f"{type(self).__name__}({str(self.id)}, nqn={str(self.queue)}, port={str(self.port)}, pf={str(self.pf)}, vf={self.vf})"
 
-    def __init__(self, subsystem: NvmeSubsystem, queue: int) -> None:
+    def __init__(self, subsystem: NvmeSubsystem, queue: int,
+                 pf: int, vf: int, port: int = 0) -> None:
         self.id = "opi-" + str(uuid.uuid1())
         self.fullname = "//storage.opiproject.org/subsystems/{}/controllers{}".format(
             subsystem.id, self.id
         )
         self.subsystem = subsystem
         self.queue = queue
+        self.pf = pf
+        self.vf = vf
+        self.port = port
 
     def create(self, address):
         with grpc.insecure_channel(address) as channel:
@@ -133,9 +140,11 @@ class NvmeController:
                     nvme_controller=frontend_nvme_pb2.NvmeController(
                         spec=frontend_nvme_pb2.NvmeControllerSpec(
                             pcie_id=opicommon_pb2.PciEndpoint(
-                                physical_function=wrappers_pb2.Int32Value(value=1),
-                                virtual_function=wrappers_pb2.Int32Value(value=2),
-                                port_id=wrappers_pb2.Int32Value(value=3),
+                                physical_function=wrappers_pb2.Int32Value(
+                                    value=self.pf
+                                ),
+                                virtual_function=wrappers_pb2.Int32Value(value=self.vf),
+                                port_id=wrappers_pb2.Int32Value(value=self.port),
                             ),
                             max_nsq=5,
                             max_ncq=6,
