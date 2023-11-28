@@ -144,7 +144,9 @@ def controller(ctx, **kwargs):
             nqn="nqn.2022-09.io.spdk:opi1", model="OPI Model", serial="OPI SN"
         )
         click.echo(s)
-        c = NvmeController(subsystem=s, queue=1024, pf=0, vf=0, port=0)
+        c = NvmeController(
+            subsystem=s, queue=1024, pf=0, vf=0, port=0, max_nsq=8, max_ncq=8
+        )
         click.echo(c)
         res = c.create(ctx.obj["ADDRESS"])
         click.echo(res)
