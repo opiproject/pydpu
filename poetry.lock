@@ -389,13 +389,13 @@ beautifulsoup4 = "*"
 
 [[package]]
 name = "google-api-core"
-version = "2.14.0"
+version = "2.15.0"
 description = "Google API client core library"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-api-core-2.14.0.tar.gz", hash = "sha256:5368a4502b793d9bbf812a5912e13e4e69f9bd87f6efb508460c43f5bbd1ce41"},
-    {file = "google_api_core-2.14.0-py3-none-any.whl", hash = "sha256:de2fb50ed34d47ddbb2bd2dcf680ee8fead46279f4ed6b16de362aca23a18952"},
+    {file = "google-api-core-2.15.0.tar.gz", hash = "sha256:abc978a72658f14a2df1e5e12532effe40f94f868f6e23d95133bd6abcca35ca"},
+    {file = "google_api_core-2.15.0-py3-none-any.whl", hash = "sha256:2aa56d2be495551e66bbff7f729b790546f87d5c90e74781aa77233bcb395a8a"},
 ]
 
 [package.dependencies]
