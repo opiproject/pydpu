@@ -6,7 +6,7 @@ import uuid
 import grpc
 from google.protobuf import field_mask_pb2, wrappers_pb2
 
-from .proto.v1 import frontend_nvme_pb2, frontend_nvme_pb2_grpc, opicommon_pb2, uuid_pb2
+from .proto.v1 import frontend_nvme_pb2, frontend_nvme_pb2_grpc, opicommon_pb2
 
 
 class NvmeSubsystem:
@@ -157,7 +157,7 @@ class NvmeController:
                     nvme_controller_id=str(self.id),
                     nvme_controller=frontend_nvme_pb2.NvmeController(
                         spec=frontend_nvme_pb2.NvmeControllerSpec(
-                            trtype=opicommon_pb2.NVME_TRANSPORT_PCIE,
+                            trtype=opicommon_pb2.NVME_TRANSPORT_TYPE_PCIE,
                             pcie_id=opicommon_pb2.PciEndpoint(
                                 physical_function=wrappers_pb2.Int32Value(
                                     value=self.pf
@@ -268,9 +268,7 @@ class NvmeNamespace:
                     nvme_namespace=frontend_nvme_pb2.NvmeNamespace(
                         spec=frontend_nvme_pb2.NvmeNamespaceSpec(
                             volume_name_ref=self.volume,
-                            uuid=uuid_pb2.Uuid(
-                                value="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb"
-                            ),
+                            uuid="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb",
                             nguid="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb",
                             eui64=1967554867335598546,
                             host_nsid=1,
@@ -290,9 +288,7 @@ class NvmeNamespace:
                         name=self.fullname,
                         spec=frontend_nvme_pb2.NvmeNamespaceSpec(
                             volume_name_ref="Malloc1",
-                            uuid=uuid_pb2.Uuid(
-                                value="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb"
-                            ),
+                            uuid="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb",
                             nguid="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb",
                             eui64=1967554867335598546,
                             host_nsid=1,
