@@ -137,9 +137,7 @@ class NvmeController:
         max_ncq: int = 0,
     ) -> None:
         self.id = "opi-" + str(uuid.uuid1())
-        self.name = "nvmeSubsystems/{}/nvmeControllers{}".format(
-            subsystem.id, self.id
-        )
+        self.name = "nvmeSubsystems/{}/nvmeControllers/{}".format(subsystem.id, self.id)
         self.subsystem = subsystem
         self.queue = queue
         self.pf = pf
@@ -252,9 +250,7 @@ class NvmeNamespace:
 
     def __init__(self, subsystem: NvmeSubsystem, volume: str) -> None:
         self.id = "opi-" + str(uuid.uuid1())
-        self.name = "nvmeSubsystems/{}/nvmeNamespaces{}".format(
-            subsystem.id, self.id
-        )
+        self.name = "nvmeSubsystems/{}/nvmeNamespaces/{}".format(subsystem.id, self.id)
         self.subsystem = subsystem
         self.volume = volume
 
