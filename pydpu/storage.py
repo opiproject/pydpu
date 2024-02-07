@@ -23,7 +23,7 @@ class NvmeSubsystem:
 
     def __init__(self, nqn: str, model="OPI Model", serial="OPI SN", ns=10) -> None:
         self.id = "opi-" + str(uuid.uuid1())
-        self.fullname = "//storage.opiproject.org/subsystems/" + str(self.id)
+        self.name = "nvmeSubsystems/" + str(self.id)
         self.nqn = nqn
         self.model = model
         self.serial = serial
@@ -54,7 +54,7 @@ class NvmeSubsystem:
                 request=frontend_nvme_pb2.UpdateNvmeSubsystemRequest(
                     update_mask=field_mask_pb2.FieldMask(paths=["*"]),
                     nvme_subsystem=frontend_nvme_pb2.NvmeSubsystem(
-                        name=self.fullname,
+                        name=self.name,
                         spec=frontend_nvme_pb2.NvmeSubsystemSpec(
                             model_number=self.model,
                             serial_number=self.serial,
@@ -79,7 +79,7 @@ class NvmeSubsystem:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.DeleteNvmeSubsystem(
                 request=frontend_nvme_pb2.DeleteNvmeSubsystemRequest(
-                    name=self.fullname,
+                    name=self.name,
                 )
             )
             return res
@@ -89,7 +89,7 @@ class NvmeSubsystem:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.GetNvmeSubsystem(
                 request=frontend_nvme_pb2.GetNvmeSubsystemRequest(
-                    name=self.fullname,
+                    name=self.name,
                 )
             )
             return res
@@ -99,7 +99,7 @@ class NvmeSubsystem:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.StatsNvmeSubsystem(
                 request=frontend_nvme_pb2.StatsNvmeSubsystemRequest(
-                    name=self.fullname,
+                    name=self.name,
                 )
             )
             return res
@@ -137,7 +137,7 @@ class NvmeController:
         max_ncq: int = 0,
     ) -> None:
         self.id = "opi-" + str(uuid.uuid1())
-        self.fullname = "//storage.opiproject.org/subsystems/{}/controllers{}".format(
+        self.name = "nvmeSubsystems/{}/nvmeControllers{}".format(
             subsystem.id, self.id
         )
         self.subsystem = subsystem
@@ -153,7 +153,7 @@ class NvmeController:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNvmeController(
                 request=frontend_nvme_pb2.CreateNvmeControllerRequest(
-                    parent=str(self.subsystem.fullname),
+                    parent=str(self.subsystem.name),
                     nvme_controller_id=str(self.id),
                     nvme_controller=frontend_nvme_pb2.NvmeController(
                         spec=frontend_nvme_pb2.NvmeControllerSpec(
@@ -183,7 +183,7 @@ class NvmeController:
                 request=frontend_nvme_pb2.UpdateNvmeControllerRequest(
                     update_mask=field_mask_pb2.FieldMask(paths=["*"]),
                     nvme_controller=frontend_nvme_pb2.NvmeController(
-                        name=self.fullname,
+                        name=self.name,
                         spec=frontend_nvme_pb2.NvmeControllerSpec(
                             pcie_id=opicommon_pb2.PciEndpoint(
                                 physical_function=1, virtual_function=2, port_id=3
@@ -204,7 +204,7 @@ class NvmeController:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.ListNvmeControllers(
                 request=frontend_nvme_pb2.ListNvmeControllersRequest(
-                    parent=str(self.subsystem.fullname)
+                    parent=str(self.subsystem.name)
                 )
             )
             return res
@@ -214,7 +214,7 @@ class NvmeController:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.DeleteNvmeController(
                 request=frontend_nvme_pb2.DeleteNvmeControllerRequest(
-                    name=self.fullname,
+                    name=self.name,
                 )
             )
             return res
@@ -224,7 +224,7 @@ class NvmeController:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.GetNvmeController(
                 request=frontend_nvme_pb2.GetNvmeControllerRequest(
-                    name=self.fullname,
+                    name=self.name,
                 )
             )
             return res
@@ -234,7 +234,7 @@ class NvmeController:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.StatsNvmeController(
                 request=frontend_nvme_pb2.StatsNvmeControllerRequest(
-                    name=self.fullname,
+                    name=self.name,
                 )
             )
             return res
@@ -252,7 +252,7 @@ class NvmeNamespace:
 
     def __init__(self, subsystem: NvmeSubsystem, volume: str) -> None:
         self.id = "opi-" + str(uuid.uuid1())
-        self.fullname = "//storage.opiproject.org/subsystems/{}/namespaces{}".format(
+        self.name = "nvmeSubsystems/{}/nvmeNamespaces{}".format(
             subsystem.id, self.id
         )
         self.subsystem = subsystem
@@ -263,7 +263,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.CreateNvmeNamespace(
                 request=frontend_nvme_pb2.CreateNvmeNamespaceRequest(
-                    parent=str(self.subsystem.fullname),
+                    parent=str(self.subsystem.name),
                     nvme_namespace_id=str(self.id),
                     nvme_namespace=frontend_nvme_pb2.NvmeNamespace(
                         spec=frontend_nvme_pb2.NvmeNamespaceSpec(
@@ -285,7 +285,7 @@ class NvmeNamespace:
                 request=frontend_nvme_pb2.UpdateNvmeNamespaceRequest(
                     update_mask=field_mask_pb2.FieldMask(paths=["*"]),
                     nvme_namespace=frontend_nvme_pb2.NvmeNamespace(
-                        name=self.fullname,
+                        name=self.name,
                         spec=frontend_nvme_pb2.NvmeNamespaceSpec(
                             volume_name_ref="Malloc1",
                             uuid="1b4e28ba-2fa1-11d2-883f-b9a761bde3fb",
@@ -303,7 +303,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.ListNvmeNamespaces(
                 request=frontend_nvme_pb2.ListNvmeNamespacesRequest(
-                    parent=str(self.subsystem.fullname)
+                    parent=str(self.subsystem.name)
                 )
             )
             return res
@@ -313,7 +313,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.DeleteNvmeNamespace(
                 request=frontend_nvme_pb2.DeleteNvmeNamespaceRequest(
-                    name=self.fullname,
+                    name=self.name,
                 )
             )
             return res
@@ -323,7 +323,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.GetNvmeNamespace(
                 request=frontend_nvme_pb2.GetNvmeNamespaceRequest(
-                    name=self.fullname,
+                    name=self.name,
                 )
             )
             return res
@@ -333,7 +333,7 @@ class NvmeNamespace:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.StatsNvmeNamespace(
                 request=frontend_nvme_pb2.StatsNvmeNamespaceRequest(
-                    name=self.fullname,
+                    name=self.name,
                 )
             )
             return res
