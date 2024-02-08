@@ -6,7 +6,13 @@ import uuid
 import grpc
 from google.protobuf import field_mask_pb2, wrappers_pb2
 
-from .proto.v1 import frontend_nvme_pb2, frontend_nvme_pb2_grpc, opicommon_pb2
+from .proto.v1 import (
+    backend_nvme_pb2,
+    backend_nvme_pb2_grpc,
+    frontend_nvme_pb2,
+    frontend_nvme_pb2_grpc,
+    opicommon_pb2,
+)
 
 
 class NvmeSubsystem:
@@ -329,6 +335,105 @@ class NvmeNamespace:
             stub = frontend_nvme_pb2_grpc.FrontendNvmeServiceStub(channel)
             res = stub.StatsNvmeNamespace(
                 request=frontend_nvme_pb2.StatsNvmeNamespaceRequest(
+                    name=self.name,
+                )
+            )
+            return res
+
+
+class NvmeRemoteController:
+    """An object representing Nvme remote controller.
+    Args:
+        multipath:  multipath mode:
+            backend_nvme_pb2.NVME_MULTIPATH_DISABLE,
+            backend_nvme_pb2.NVME_MULTIPATH_FAILOVER,
+            backend_nvme_pb2.NVME_MULTIPATH_MULTIPATH
+        hdgst:      header digest
+        ddgst:      data digest
+    """
+
+    def __repr__(self) -> str:
+        return (
+            f"{type(self).__name__}({str(self.id)}, "
+            + f"multipath={str(self.multipath)}, hdgst={str(self.hdgst)}, "
+            + f"ddgst={str(self.ddgst)})"
+        )
+
+    def __init__(self, multipath: int, hdgst: bool, ddgst: bool) -> None:
+        self.id = "opi-" + str(uuid.uuid1())
+        self.multipath = multipath
+        self.hdgst = hdgst
+        self.ddgst = ddgst
+        self.name = "nvmeRemoteControllers/{}".format(self.id)
+
+    def create(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.CreateNvmeRemoteController(
+                request=backend_nvme_pb2.CreateNvmeRemoteControllerRequest(
+                    nvme_remote_controller_id=self.id,
+                    nvme_remote_controller=backend_nvme_pb2.NvmeRemoteController(
+                        multipath=self.multipath,
+                        tcp=backend_nvme_pb2.TcpController(
+                            hdgst=self.hdgst,
+                            ddgst=self.ddgst,
+                        ),
+                    ),
+                )
+            )
+            return res
+
+    def update(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.UpdateNvmeRemoteController(
+                request=backend_nvme_pb2.UpdateNvmeRemoteControllerRequest(
+                    update_mask=field_mask_pb2.FieldMask(paths=["*"]),
+                    nvme_remote_controller=backend_nvme_pb2.NvmeRemoteController(
+                        name=self.name,
+                        multipath=self.multipath,
+                        tcp=backend_nvme_pb2.TcpController(
+                            hdgst=self.hdgst,
+                            ddgst=self.ddgst,
+                        ),
+                    ),
+                )
+            )
+            return res
+
+    def list(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.ListNvmeRemoteControllers(
+                request=backend_nvme_pb2.ListNvmeRemoteControllersRequest()
+            )
+            return res
+
+    def delete(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.DeleteNvmeRemoteController(
+                request=backend_nvme_pb2.DeleteNvmeRemoteControllerRequest(
+                    name=self.name,
+                )
+            )
+            return res
+
+    def get(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.GetNvmeRemoteController(
+                request=backend_nvme_pb2.GetNvmeRemoteControllerRequest(
+                    name=self.name,
+                )
+            )
+            return res
+
+    def stats(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.StatsNvmeRemoteController(
+                request=backend_nvme_pb2.StatsNvmeRemoteControllerRequest(
                     name=self.name,
                 )
             )
