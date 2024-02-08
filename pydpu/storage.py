@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2022 Dell Inc, or its subsidiaries.
 
+import ipaddress
 import uuid
 
 import grpc
@@ -434,6 +435,130 @@ class NvmeRemoteController:
             stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
             res = stub.StatsNvmeRemoteController(
                 request=backend_nvme_pb2.StatsNvmeRemoteControllerRequest(
+                    name=self.name,
+                )
+            )
+            return res
+
+
+ip_to_grpc_version = {
+    4: opicommon_pb2.NVME_ADDRESS_FAMILY_IPV4,
+    6: opicommon_pb2.NVME_ADDRESS_FAMILY_IPV6,
+}
+
+
+class NvmeTcpPath:
+    """An object representing Nvme TCP path.
+    Args:
+        ip:         ip address to target controller
+        port:       port of target controller
+        subnqn:     subsystem nqn
+        hostnqn:    host nqn
+    """
+
+    def __repr__(self) -> str:
+        return (
+            f"{type(self).__name__}({str(self.id)}, ip={str(self.ip)}, "
+            + f"adrfam={str(self.adrfam)}, port={str(self.port)}), "
+            + f"subnqn={str(self.subnqn)}, hostnqn={str(self.hostnqn)}"
+        )
+
+    def __init__(
+        self,
+        remote_controller: NvmeRemoteController,
+        ip: str,
+        port: int,
+        subnqn: str,
+        hostnqn: str = "",
+    ) -> None:
+        self.id = "opi-" + str(uuid.uuid1())
+        self.controller = remote_controller
+        self.ip = ip
+        self.port = port
+        self.subnqn = subnqn
+        self.hostnqn = hostnqn
+        self.name = "nvmeRemoteControllers/{}/nvmePaths/{}".format(
+            remote_controller.id, self.id
+        )
+        self.adrfam = ip_to_grpc_version[ipaddress.ip_address(self.ip).version]
+
+    def create(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.CreateNvmePath(
+                request=backend_nvme_pb2.CreateNvmePathRequest(
+                    parent=self.controller.name,
+                    nvme_path_id=self.id,
+                    nvme_path=backend_nvme_pb2.NvmePath(
+                        trtype=opicommon_pb2.NVME_TRANSPORT_TYPE_TCP,
+                        traddr=self.ip,
+                        fabrics=backend_nvme_pb2.FabricsPath(
+                            trsvcid=self.port,
+                            subnqn=self.subnqn,
+                            adrfam=self.adrfam,
+                            hostnqn=self.hostnqn,
+                        ),
+                    ),
+                )
+            )
+            return res
+
+    def update(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.UpdateNvmePath(
+                request=backend_nvme_pb2.UpdateNvmePathRequest(
+                    update_mask=field_mask_pb2.FieldMask(paths=["*"]),
+                    nvme_path=backend_nvme_pb2.NvmePath(
+                        name=self.name,
+                        trtype=opicommon_pb2.NVME_TRANSPORT_TYPE_TCP,
+                        traddr=self.ip,
+                        fabrics=backend_nvme_pb2.FabricsPath(
+                            trsvcid=self.port,
+                            subnqn=self.subnqn,
+                            adrfam=self.adrfam,
+                            hostnqn=self.hostnqn,
+                        ),
+                    ),
+                )
+            )
+            return res
+
+    def list(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.ListNvmePaths(
+                request=backend_nvme_pb2.ListNvmePathsRequest(
+                    parent=self.controller.name
+                )
+            )
+            return res
+
+    def delete(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.DeleteNvmePath(
+                request=backend_nvme_pb2.DeleteNvmePathRequest(
+                    name=self.name,
+                )
+            )
+            return res
+
+    def get(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.GetNvmePath(
+                request=backend_nvme_pb2.GetNvmePathRequest(
+                    name=self.name,
+                )
+            )
+            return res
+
+    def stats(self, address):
+        with grpc.insecure_channel(address) as channel:
+            stub = backend_nvme_pb2_grpc.NvmeRemoteControllerServiceStub(channel)
+            res = stub.StatsNvmePath(
+                request=backend_nvme_pb2.StatsNvmePathRequest(
                     name=self.name,
                 )
             )
