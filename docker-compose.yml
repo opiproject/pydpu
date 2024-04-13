@@ -49,7 +49,7 @@ services:
     networks:
       - opi
     healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
 
   jaeger:
     image: jaegertracing/all-in-one:1.53.0
