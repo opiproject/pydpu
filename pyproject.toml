@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pydpu"
-version = "0.2.0"
+version = "0.2.1"
 description = "Python library and cli to communicate with DPUs and IPUs"
 authors = ["OPI Dev <opi-dev@lists.opiproject.org>"]
 license = "Apache-2.0"
