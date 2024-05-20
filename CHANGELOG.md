@@ -2,7 +2,6 @@
 
 ## [0.2.0](https://github.com/opiproject/pydpu/compare/v0.1.1...v0.2.0) (2024-05-15)
 
-
 ### Features
 
 * add redfish basic comamnds ([3143288](https://github.com/opiproject/pydpu/commit/314328835931993a4fad7f3a9936365b2ad32026))
@@ -18,7 +17,6 @@
 * **storage:** add NvmeRemoteController class ([6d7e27a](https://github.com/opiproject/pydpu/commit/6d7e27a8dee26eb70ee00c69d723d07c7a56e816))
 * **storage:** change id refs to name ([c3b024c](https://github.com/opiproject/pydpu/commit/c3b024ce1d029005d385a1e2da0fe54ea578279b))
 * **storage:** change id refs to name ([ec3a8d4](https://github.com/opiproject/pydpu/commit/ec3a8d41163c44ba928a1a92dc857b58d0dedc9e))
-
 
 ### Bug Fixes
 
@@ -38,7 +36,7 @@
 * **deps:** update dependency grpcio to v1.60.0 ([ae3f5a9](https://github.com/opiproject/pydpu/commit/ae3f5a904611d81472e53b92c4579bf3cf69e753))
 * few typos ([78ad4e8](https://github.com/opiproject/pydpu/commit/78ad4e85d08b3e888947398194130f6a18bcde3a))
 * lint error found ([dd5fc88](https://github.com/opiproject/pydpu/commit/dd5fc88912578246c4f1b38555c55dcd23c48e49))
-* **make:** skip __init__.py files ([ff7db68](https://github.com/opiproject/pydpu/commit/ff7db686aee9ddcb64a42eabb6fdd164648827ee))
+* **make:** skip `__init__.py` files ([ff7db68](https://github.com/opiproject/pydpu/commit/ff7db686aee9ddcb64a42eabb6fdd164648827ee))
 * **proto:** include subsystem in full resource name ([b320344](https://github.com/opiproject/pydpu/commit/b320344d80aa37964a1078b4897ade5a6f32dbeb))
 * readme badge after action rename ([9402748](https://github.com/opiproject/pydpu/commit/940274833054597f56c00d350482f04189ffbdba))
 * **storage/nvme:** pass required trtype for controller ([3d3ec41](https://github.com/opiproject/pydpu/commit/3d3ec4110449276f8ef7ebd744800f04f9f4a9b7))
