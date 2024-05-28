@@ -10,6 +10,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  call:
-    uses: opiproject/actions/.github/workflows/release-please.yml@main
-    secrets: inherit
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        with:
+          release-type: python
+          package-name: release-please-action
