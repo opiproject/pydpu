@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.1](https://github.com/opiproject/pydpu/compare/v0.2.0...v0.2.1) (2024-08-02)
+
+
+### Bug Fixes
+
+* forgot to inc version ([2c6c016](https://github.com/opiproject/pydpu/commit/2c6c016e3ec692420c0d1035a543ce9cf17f73e5))
+* linter ([aeb7aab](https://github.com/opiproject/pydpu/commit/aeb7aaba768f0ca71903a2755331327019fb7ce4))
+* typo ([ee4fa3e](https://github.com/opiproject/pydpu/commit/ee4fa3eeb12b7a604d5a8e0e0a5b24cc04605170))
+
 ## [0.2.0](https://github.com/opiproject/pydpu/compare/v0.1.1...v0.2.0) (2024-05-15)
 
 ### Features
